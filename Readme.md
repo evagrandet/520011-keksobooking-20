@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
-* Студент: [Евгения Козлова](https://up.htmlacademy.ru/javascript/20/user/520011).
-* Наставник: `Неизвестно`.
+- Студент: [Евгения Козлова](https://up.htmlacademy.ru/javascript/20/user/520011).
+- Наставник: [Мария Наг](https://htmlacademy.ru/profile/id47061).
 
 ---
 
