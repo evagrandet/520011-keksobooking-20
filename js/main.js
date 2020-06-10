@@ -36,30 +36,46 @@ var getRandomElement = function (elements) {
   return elements[Math.floor(Math.random() * elements.length)];
 };
 
+// функция для создания массива случайной длины без повторов в элементах
+var getRandomElements = function (elements) {
+  var randomElements = [];
+  var i = 0;
+  while (i <= Math.floor(Math.random() * elements.length)) {
+    var element = elements[Math.floor(Math.random() * elements.length)];
+    if (randomElements.indexOf(element) === -1) {
+      randomElements.push(element);
+      i++;
+    }
+  }
+  return randomElements;
+};
+
 // функция, в которой создается массив, внутри цикла в каждой итерации создается объявление и затем пушится в массив
 var getRandomAdvertsList = function () {
   var adverts = [];
   for (var i = 0; i < ADVERT_COUNT; i++) {
+    var advertLocationX = Math.floor(Math.random() * (mapBlockWidth + 1));
+    var advertLocationY = Math.floor(MIN_Y_COORDINATE + Math.random() * (MAX_Y_COORDINATE + 1 - MIN_Y_COORDINATE)) + PIN_HEIGHT;
     var advert = {
       'author': {
         'avatar': 'img/avatars/user0' + (i + 1) + '.png',
       },
       'offer': {
         'title': getRandomElement(ADVERT_TITLES),
-        'address': location.x + location.y,
+        'address': advertLocationX + ', ' + advertLocationY,
         'price': getRandomElement(ADVERT_PRICES),
         'type': getRandomElement(ADVERT_TYPES),
         'rooms': getRandomElement(ADVERT_ROOMS),
         'guests': getRandomElement(ADVERT_GUESTS),
         'checkin': getRandomElement(ADVERT_CHECKINS),
         'checkout': getRandomElement(ADVERT_CHECKOUTS),
-        'features': getRandomElement(ADVERT_FEATURES),
+        'features': getRandomElements(ADVERT_FEATURES),
         'description': getRandomElement(ADVERT_DESCRIPTIONS),
-        'photos': getRandomElement(ADVERT_PHOTOS),
+        'photos': getRandomElements(ADVERT_PHOTOS),
       },
       'location': {
-        'x': Math.floor(Math.random() * (mapBlockWidth + 1)),
-        'y': Math.floor(MIN_Y_COORDINATE + Math.random() * (MAX_Y_COORDINATE + 1 - MIN_Y_COORDINATE)) + PIN_HEIGHT
+        'x': advertLocationX,
+        'y': advertLocationY
       }
     };
     adverts.push(advert);
@@ -73,11 +89,11 @@ var adverts = getRandomAdvertsList();
 // функция для отображения объявлений в пинах
 var renderAdverts = function (advert) {
   var pinElement = pinTemplate.cloneNode(true);
-  var pinButton = pinElement.querySelector('img');
+  var pinImage = pinElement.querySelector('img');
   pinElement.style.left = advert.location.x - PIN_WIDTH / 2 + 'px';
   pinElement.style.top = advert.location.y - PIN_HEIGHT + 'px';
-  pinButton.src = advert.author.avatar;
-  pinElement.setAttribute('alt', advert.offer.title);
+  pinImage.src = advert.author.avatar;
+  pinImage.setAttribute('alt', advert.offer.title);
   return pinElement;
 };
 
