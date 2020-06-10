@@ -3,7 +3,7 @@
 // константы
 var ADVERT_COUNT = 8;
 var ADVERT_TITLES = ['Заголовок1', 'Заголовок2', 'Заголовок3', 'Заголовок4', 'Заголовок5', 'Заголовок6', 'Заголовок7', 'Заголовок8'];
-var ARVERT_ADDRESS = ['600, 301', '600, 302', '600, 303', '600, 304', '600, 305', '600, 306', '600, 307', '600, 308'];
+var ADVERT_ADDRESS = ['600, 301', '600, 302', '600, 303', '600, 304', '600, 305', '600, 306', '600, 307', '600, 308'];
 var ADVERT_PRICES = ['100', '200', '300', '400', '500', '600', '700', '800'];
 var ADVERT_TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var ADVERT_ROOMS = ['1', '2', '3', '4', '5', '6', '7', '8'];
@@ -43,8 +43,8 @@ var getRandomAdvertsList = function () {
         'avatar': 'img/avatars/user0' + i + '.png',
       },
       'offer': {
-        'title': getRandomElement(ARVERT_TITLES),
-        'address': ARVERT_ADDRESS[i],
+        'title': getRandomElement(ADVERT_TITLES),
+        'address': ADVERT_ADDRESS[i],
         'price': getRandomElement(ADVERT_PRICES),
         'type': getRandomElement(ADVERT_TYPES),
         'rooms': getRandomElement(ADVERT_ROOMS),
