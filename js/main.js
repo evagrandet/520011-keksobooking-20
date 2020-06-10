@@ -3,7 +3,6 @@
 // константы
 var ADVERT_COUNT = 8;
 var ADVERT_TITLES = ['Заголовок1', 'Заголовок2', 'Заголовок3', 'Заголовок4', 'Заголовок5', 'Заголовок6', 'Заголовок7', 'Заголовок8'];
-var ADVERT_ADDRESS = ['600, 301', '600, 302', '600, 303', '600, 304', '600, 305', '600, 306', '600, 307', '600, 308'];
 var ADVERT_PRICES = ['100', '200', '300', '400', '500', '600', '700', '800'];
 var ADVERT_TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var ADVERT_ROOMS = ['1', '2', '3', '4', '5', '6', '7', '8'];
@@ -15,6 +14,9 @@ var ADVERT_PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http
 var ADVERT_DESCRIPTIONS = ['описание1', 'описание2', 'описание3', 'описание4', 'описание5', 'описание6', 'описание7', 'описание8'];
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
+var MAX_Y_COORDINATE = 630;
+var MIN_Y_COORDINATE = 130;
+
 
 // получаю элемент карты из DOM, записываю его в переменную, удаляю у него класс
 var mapBlock = document.querySelector('.map');
@@ -37,14 +39,14 @@ var getRandomElement = function (elements) {
 // функция, в которой создается массив, внутри цикла в каждой итерации создается объявление и затем пушится в массив
 var getRandomAdvertsList = function () {
   var adverts = [];
-  for (var i = 1; i <= ADVERT_COUNT; i++) {
+  for (var i = 0; i < ADVERT_COUNT; i++) {
     var advert = {
       'author': {
-        'avatar': 'img/avatars/user0' + i + '.png',
+        'avatar': 'img/avatars/user0' + (i + 1) + '.png',
       },
       'offer': {
         'title': getRandomElement(ADVERT_TITLES),
-        'address': ADVERT_ADDRESS[i],
+        'address': location.x + location.y,
         'price': getRandomElement(ADVERT_PRICES),
         'type': getRandomElement(ADVERT_TYPES),
         'rooms': getRandomElement(ADVERT_ROOMS),
@@ -57,7 +59,7 @@ var getRandomAdvertsList = function () {
       },
       'location': {
         'x': Math.floor(Math.random() * (mapBlockWidth + 1)),
-        'y': Math.floor(130 + Math.random() * (630 + 1 - 130))
+        'y': Math.floor(MIN_Y_COORDINATE + Math.random() * (MAX_Y_COORDINATE + 1 - MIN_Y_COORDINATE)) + PIN_HEIGHT
       }
     };
     adverts.push(advert);
@@ -71,9 +73,10 @@ var adverts = getRandomAdvertsList();
 // функция для отображения объявлений в пинах
 var renderAdverts = function (advert) {
   var pinElement = pinTemplate.cloneNode(true);
+  var pinButton = pinElement.querySelector('img');
   pinElement.style.left = advert.location.x + PIN_WIDTH / 2 + 'px';
-  pinElement.style.top = advert.location.y + PIN_HEIGHT + 'px';
-  pinElement.src = advert.author.avatar;
+  pinElement.style.top = advert.location.y - PIN_HEIGHT + 'px';
+  pinButton.src = advert.author.avatar;
   pinElement.setAttribute('alt', advert.offer.title);
   return pinElement;
 };
