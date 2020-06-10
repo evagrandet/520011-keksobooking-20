@@ -73,7 +73,7 @@ var renderAdverts = function (advert) {
   var pinElement = pinTemplate.cloneNode(true);
   pinElement.style.left = advert.location.x + PIN_WIDTH / 2 + 'px';
   pinElement.style.top = advert.location.y + PIN_HEIGHT + 'px';
-  pinElement.setAttribute('src', advert.author.avatar);
+  pinElement.src = advert.author.avatar;
   pinElement.setAttribute('alt', advert.offer.title);
   return pinElement;
 };
