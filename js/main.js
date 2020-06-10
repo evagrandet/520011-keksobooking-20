@@ -74,7 +74,7 @@ var adverts = getRandomAdvertsList();
 var renderAdverts = function (advert) {
   var pinElement = pinTemplate.cloneNode(true);
   var pinButton = pinElement.querySelector('img');
-  pinElement.style.left = advert.location.x + PIN_WIDTH / 2 + 'px';
+  pinElement.style.left = advert.location.x - PIN_WIDTH / 2 + 'px';
   pinElement.style.top = advert.location.y - PIN_HEIGHT + 'px';
   pinButton.src = advert.author.avatar;
   pinElement.setAttribute('alt', advert.offer.title);
