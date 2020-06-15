@@ -17,10 +17,18 @@ var PIN_HEIGHT = 70;
 var MAX_Y_COORDINATE = 630;
 var MIN_Y_COORDINATE = 130;
 
+var ENTER_KEY_CODE = 13;
+
 
 // получаю элемент карты из DOM, записываю его в переменную, удаляю у него класс
 var mapBlock = document.querySelector('.map');
-mapBlock.classList.remove('map--faded');
+
+var adForm = document.querySelector('.ad-form');
+
+var mapFilters = document.querySelector('.map__filters').children;
+for (var i = 0; i < mapFilters.length; i++) {
+  mapFilters[i].disabled = true;
+}
 
 // записываю в переменную ширину элемента карты
 var mapBlockWidth = mapBlock.offsetWidth;
@@ -107,3 +115,20 @@ for (var i = 0; i < adverts.length; i++) {
 
 // разом добавляю все пины-объявления в конец элемента, в котором должна быть разметка пинов
 mapPinsList.appendChild(fragment);
+
+
+var mainPin = document.querySelector('.map__pin--main');
+
+var onActivatedPin = function (evt) {
+  var buttonPressed = evt.which;
+  if (buttonPressed === 1 || evt.keyCode === ENTER_KEY_CODE) {
+    mapBlock.classList.remove('map--faded');
+    adForm.classList.remove('ad-form--disabled');
+    for (var i = 0; i < mapFilters.length; i++) {
+      mapFilters[i].disabled = false;
+    }
+    //Форма с фильтрами .map__filters заблокирована так же, как и форма .ad-form; ???
+  }
+}
+mainPin.addEventListener('mousedown', onActivatedPin)
+mainPin.addEventListener('keydown', onActivatedPin)
