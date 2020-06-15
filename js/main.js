@@ -14,21 +14,17 @@ var ADVERT_PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http
 var ADVERT_DESCRIPTIONS = ['описание1', 'описание2', 'описание3', 'описание4', 'описание5', 'описание6', 'описание7', 'описание8'];
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
+var MAIN_PIN_WIDTH = 65;
+var MAIN_PIN_HEIGHT = 65;
+var MAIN_PIN_TAIL = 22;
 var MAX_Y_COORDINATE = 630;
 var MIN_Y_COORDINATE = 130;
 
 var ENTER_KEY_CODE = 13;
 
 
-// получаю элемент карты из DOM, записываю его в переменную, удаляю у него класс
+// получаю элемент карты из DOM, записываю его в переменную
 var mapBlock = document.querySelector('.map');
-
-var adForm = document.querySelector('.ad-form');
-
-var mapFilters = document.querySelector('.map__filters').children;
-for (var i = 0; i < mapFilters.length; i++) {
-  mapFilters[i].disabled = true;
-}
 
 // записываю в переменную ширину элемента карты
 var mapBlockWidth = mapBlock.offsetWidth;
@@ -117,18 +113,80 @@ for (var i = 0; i < adverts.length; i++) {
 mapPinsList.appendChild(fragment);
 
 
+
+
+//неактивный режим, валидация
+
+var adForm = document.querySelector('.ad-form');
+var adFormFieldsets = adForm.children;
+for (var j = 0; j < adFormFieldsets.length; j++) {
+  adFormFieldsets[j].disabled = true;
+}
+var mapFilters = document.querySelector('.map__filters').children;
+for (var i = 0; i < mapFilters.length; i++) {
+  mapFilters[i].disabled = true;
+}
 var mainPin = document.querySelector('.map__pin--main');
+var advertAdressInput = document.querySelector('#address');
+advertAdressInput.value = Math.round(mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(mainPin.offsetTop + MAIN_PIN_HEIGHT / 2);
 
 var onActivatedPin = function (evt) {
   var buttonPressed = evt.which;
   if (buttonPressed === 1 || evt.keyCode === ENTER_KEY_CODE) {
     mapBlock.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
+    for (var j = 0; j < adFormFieldsets.length; j++) {
+      adFormFieldsets[j].disabled = false;
+    }
     for (var i = 0; i < mapFilters.length; i++) {
       mapFilters[i].disabled = false;
     }
-    //Форма с фильтрами .map__filters заблокирована так же, как и форма .ad-form; ???
+    advertAdressInput.value = Math.round(mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(mainPin.offsetTop + MAIN_PIN_HEIGHT + MAIN_PIN_TAIL);
+    advertAdressInput.disabled = true;
   }
 }
 mainPin.addEventListener('mousedown', onActivatedPin)
 mainPin.addEventListener('keydown', onActivatedPin)
+
+var typeAdvertSelect = document.querySelector('#type');
+var priceAdvertInput = document.querySelector('#price');
+
+var priceTypeToRange = {
+  bungalo: '0',
+  flat: '1000',
+  house: '5000',
+  palace: '10000'
+};
+
+var onSelectType = function (evt) {
+  priceAdvertInput.placeholder = priceTypeToRange[evt.target.value];
+  priceAdvertInput.min = priceTypeToRange[evt.target.value];
+  if (priceAdvertInput.value < priceAdvertInput.min) {
+    priceAdvertInput.setCustomValidity('Выбранная Вами цена меньше минимально допустимой цены в ' + priceTypeToRange[evt.target.value] + 'руб')
+  }
+  return evt.target.value
+}
+
+var roomsAdvertSelect = document.querySelector('#room_number');
+var guestsAdvertSelect = document.querySelector('#capacity');
+
+var rooomsTypetoGuests =  {
+  1: '1',
+  2: '2',
+  3: '3',
+  100: '0'
+}
+
+var onSelectRooms = function (evt) {
+  guestsAdvertSelect.value = rooomsTypetoGuests[evt.target.value];
+  var roomsOptions = roomsAdvertSelect.children
+  for (var i = 0; i < roomsOptions.length; i++) {
+    console.log(roomsOptions[i])
+    if (roomsOptions[i].value !== rooomsTypetoGuests[evt.target.value]) {
+      guestsAdvertSelect.disabled = true;
+    }
+  }
+}
+roomsAdvertSelect.addEventListener('change', onSelectRooms);
+guestsAdvertSelect.addEventListener('change', onSelectGuests);
+typeAdvertSelect.addEventListener('change', onSelectType);
