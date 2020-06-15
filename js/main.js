@@ -17,6 +17,13 @@ var PIN_HEIGHT = 70;
 var MAX_Y_COORDINATE = 630;
 var MIN_Y_COORDINATE = 130;
 
+var AdvertTypes = {
+  palace: 'Дворец',
+  flat: 'Квартира',
+  house: 'Дом',
+  bungalo: 'Бунгало',
+};
+
 
 // получаю элемент карты из DOM, записываю его в переменную, удаляю у него класс
 var mapBlock = document.querySelector('.map');
@@ -110,18 +117,6 @@ for (var i = 0; i < adverts.length; i++) {
 mapPinsList.appendChild(fragment);
 
 // трэш
-
-var getAdvertType = function (type) {
-  if (type === 'flat') {
-    return 'Квартира';
-  } else if (type === 'bungalo') {
-    return 'Бунгало';
-  } else if (type === 'house') {
-    return 'Дом';
-  } else if (type === 'palace') {
-    return 'Дворец';
-  }
-};
 
 var getAdvertFeatures = function (features) {
   var result = ''
