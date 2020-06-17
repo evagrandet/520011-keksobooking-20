@@ -24,6 +24,15 @@ var AdvertTypes = {
   bungalo: 'Бунгало',
 };
 
+var AdvertFeautures = {
+  wifi: 'WiFi',
+  dishwasher: 'посудомоечная машина',
+  parking: 'парковка',
+  washer: 'стиральная машина',
+  elevator: 'лифт',
+  conditioner: 'кондиционер'
+}
+
 
 // получаю элемент карты из DOM, записываю его в переменную, удаляю у него класс
 var mapBlock = document.querySelector('.map');
@@ -119,37 +128,27 @@ mapPinsList.appendChild(fragment);
 // трэш
 
 var getAdvertFeatures = function (features) {
-  var result = ''
+  var result = [];
   for (var i = 0; i < features.length; i++) {
-      if (features[i] === 'wifi') {
-        result = result + 'WiFi' + ', '
-      } else if (features[i] === 'dishwasher') {
-        result = result + 'посудомоечная машина'  + ', '
-      } else if (features[i] === 'parking') {
-        result = result + 'парковка'  + ', '
-      } else if (features[i] === 'washer') {
-        result = result + 'стиральная машина'  + ', '
-      } else if (features[i] === 'elevator') {
-        result = result + 'лифт'  + ', '
-      } else if (features[i] === 'conditioner') {
-        result = result + 'кондиционер'  + ', '
-      }
+      result.push(AdvertFeautures[features[i]])
   }
-  return result;
-}
-
-var renderPhotos = function (photo) {
-  var advertCard = cardTemplate.cloneNode(true);
-  var advertCardPhotos = advertCard.querySelector('.popup__photos');
-  var advertCardPhoto = advertCardPhotos.querySelector('.popup__photo')
-  advertCardPhoto.src = photo
-  return advertCardPhoto;
+  return result.join(', ');
 }
 
 var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+var advertCard = cardTemplate.cloneNode(true);
+
+var renderPhotos = function (photos) {
+  var photosFragment = document.createDocumentFragment();
+  var advertCardPhotos = advertCard.querySelector('.popup__photos');
+  var advertCardPhoto = advertCardPhotos.querySelector('.popup__photo')
+  for (var i = 0; i < photos.length; i++) {
+    photosFragment.appendChild(advertCardPhoto.src = photos[i])
+  }
+  return photosFragment;
+}
 
 var renderAdvertCard = function (advert) {
-  var advertCard = cardTemplate.cloneNode(true);
   var advertCardTitle = advertCard.querySelector('.popup__title');
   var advertCardAdress= advertCard.querySelector('.popup__text--address');
   var advertCardPrice = advertCard.querySelector('.popup__text--price');
@@ -161,19 +160,17 @@ var renderAdvertCard = function (advert) {
   var advertCardPhotos = advertCard.querySelector('.popup__photos');
   var advertCardPhoto = advertCardPhotos.querySelector('.popup__photo')
   var avatar = advertCard.querySelector('.popup__avatar ');
+  var photos = renderPhotos(advert.offer.photos)
   advertCardTitle.textContent = advert.offer.title;
   advertCardAdress.textContent = advert.offer.address;
   advertCardPrice.textContent = advert.offer.price + '₽/ночь';
-  advertCardType.textContent = getAdvertType(advert.offer.type);
+  advertCardType.textContent = AdvertTypes[advert.offer.type];
   advertCardRooms.textContent = advert.offer.rooms;
   advertCardTimes.textContent = 'Заезд после ' + advert.offer.checkin + ', выезд до ' + advert. offer.checkout + '.';
   advertCardFeatures.textContent = getAdvertFeatures(advert.offer.features);
   advertCardDescription.textContent = advert.offer.description;
   avatar.src = advert.author.avatar;
-  advertCardPhotos.removeChild(advertCardPhoto);
-  for (var i = 0; i < advert.offer.photos.length; i++) {
-    advertCardPhotos.appendChild(renderPhotos(advert.offer.photos[i], advertCardPhoto))
-  }
+  advertCardPhotos.replaceChild(photos, advertCardPhoto);
   return advertCard;
 }
 
