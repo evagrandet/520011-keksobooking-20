@@ -20,8 +20,6 @@ var MAIN_PIN_TAIL = 22;
 var MAX_Y_COORDINATE = 630;
 var MIN_Y_COORDINATE = 130;
 
-var ENTER_KEY_CODE = 13;
-
 
 // получаю элемент карты из DOM, записываю его в переменную
 var mapBlock = document.querySelector('.map');
@@ -30,7 +28,7 @@ var mapBlock = document.querySelector('.map');
 var mapBlockWidth = mapBlock.offsetWidth;
 
 // получаю элемент, внутри которого будут располагаться все метки на карте, записываю его в переменную
-var mapPinsList = document.querySelector('.map__pins');
+var mapPinsList = mapBlock.querySelector('.map__pins');
 
 // получаю шаблон метки, добираюсь до разметки внутри
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
@@ -113,43 +111,49 @@ for (var i = 0; i < adverts.length; i++) {
 mapPinsList.appendChild(fragment);
 
 
-
-
-//неактивный режим, валидация
-
+// неактивный режим, валидация
 var adForm = document.querySelector('.ad-form');
 var adFormFieldsets = adForm.children;
 for (var j = 0; j < adFormFieldsets.length; j++) {
   adFormFieldsets[j].disabled = true;
 }
-var mapFilters = document.querySelector('.map__filters').children;
-for (var i = 0; i < mapFilters.length; i++) {
-  mapFilters[i].disabled = true;
+var mapFilters = mapBlock.querySelector('.map__filters').children;
+for (var k = 0; k < mapFilters.length; k++) {
+  mapFilters[k].disabled = true;
 }
-var mainPin = document.querySelector('.map__pin--main');
-var advertAdressInput = document.querySelector('#address');
+var mainPin = mapBlock.querySelector('.map__pin--main');
+var advertAdressInput = adForm.querySelector('#address');
 advertAdressInput.value = Math.round(mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(mainPin.offsetTop + MAIN_PIN_HEIGHT / 2);
 
-var onActivatedPin = function (evt) {
-  var buttonPressed = evt.which;
-  if (buttonPressed === 1 || evt.keyCode === ENTER_KEY_CODE) {
-    mapBlock.classList.remove('map--faded');
-    adForm.classList.remove('ad-form--disabled');
-    for (var j = 0; j < adFormFieldsets.length; j++) {
-      adFormFieldsets[j].disabled = false;
-    }
-    for (var i = 0; i < mapFilters.length; i++) {
-      mapFilters[i].disabled = false;
-    }
-    advertAdressInput.value = Math.round(mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(mainPin.offsetTop + MAIN_PIN_HEIGHT + MAIN_PIN_TAIL);
-    advertAdressInput.disabled = true;
+var activateMap = function () {
+  mapBlock.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
+  for (var j = 0; j < adFormFieldsets.length; j++) {
+    adFormFieldsets[j].disabled = false;
   }
-}
-mainPin.addEventListener('mousedown', onActivatedPin)
-mainPin.addEventListener('keydown', onActivatedPin)
+  for (var i = 0; i < mapFilters.length; i++) {
+    mapFilters[i].disabled = false;
+  }
+  advertAdressInput.value = Math.round(mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(mainPin.offsetTop + MAIN_PIN_HEIGHT + MAIN_PIN_TAIL);
+  advertAdressInput.disabled = true;
+};
 
-var typeAdvertSelect = document.querySelector('#type');
-var priceAdvertInput = document.querySelector('#price');
+var onMainPinMousedown = function (evt) {
+  var buttonPressed = evt.which;
+  if (buttonPressed === 1) {
+    activateMap();
+  }
+};
+var onMainPinKeydown = function (evt) {
+  if (evt.key === 'Enter') {
+    activateMap();
+  }
+};
+mainPin.addEventListener('mousedown', onMainPinMousedown);
+mainPin.addEventListener('keydown', onMainPinKeydown);
+
+var typeAdvertSelect = adForm.querySelector('#type');
+var priceAdvertInput = adForm.querySelector('#price');
 
 var priceTypeToRange = {
   bungalo: '0',
@@ -158,35 +162,38 @@ var priceTypeToRange = {
   palace: '10000'
 };
 
-var onSelectType = function (evt) {
+var onTypeAdvertSelectChange = function (evt) {
   priceAdvertInput.placeholder = priceTypeToRange[evt.target.value];
   priceAdvertInput.min = priceTypeToRange[evt.target.value];
-  if (priceAdvertInput.value < priceAdvertInput.min) {
-    priceAdvertInput.setCustomValidity('Выбранная Вами цена меньше минимально допустимой цены в ' + priceTypeToRange[evt.target.value] + 'руб')
+};
+priceAdvertInput.addEventListener('invalid', function () {
+  if (priceAdvertInput.validity.rangeUnderflow) {
+    priceAdvertInput.setCustomValidity('Выбранная Вами цена меньше минимально допустимой цены в ' + priceAdvertInput.min + ' рублей');
+  } else {
+    priceAdvertInput.setCustomValidity('')
   }
-  return evt.target.value
-}
+})
 
-var roomsAdvertSelect = document.querySelector('#room_number');
-var guestsAdvertSelect = document.querySelector('#capacity');
+var roomsAdvertSelect = adForm.querySelector('#room_number');
+var guestsAdvertSelect = adForm.querySelector('#capacity');
 
-var rooomsTypetoGuests =  {
+var rooomsTypetoGuests = {
   1: '1',
   2: '2',
   3: '3',
   100: '0'
+};
+var onGuestAdvertSelectChange = function (evt) {
+  console.log(evt.target.value)
 }
-
-var onSelectRooms = function (evt) {
+var onRoomsAdvertSelectChange = function (evt) {
   guestsAdvertSelect.value = rooomsTypetoGuests[evt.target.value];
-  var roomsOptions = roomsAdvertSelect.children
+  var roomsOptions = roomsAdvertSelect.children;
+  console.log(evt.target.value)
   for (var i = 0; i < roomsOptions.length; i++) {
-    console.log(roomsOptions[i])
-    if (roomsOptions[i].value !== rooomsTypetoGuests[evt.target.value]) {
-      guestsAdvertSelect.disabled = true;
-    }
+
   }
-}
-roomsAdvertSelect.addEventListener('change', onSelectRooms);
-guestsAdvertSelect.addEventListener('change', onSelectGuests);
-typeAdvertSelect.addEventListener('change', onSelectType);
+};
+roomsAdvertSelect.addEventListener('change', onRoomsAdvertSelectChange);
+guestsAdvertSelect.addEventListener('change', onGuestAdvertSelectChange);
+typeAdvertSelect.addEventListener('change', onTypeAdvertSelectChange);
