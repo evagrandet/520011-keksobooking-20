@@ -112,18 +112,24 @@ mapPinsList.appendChild(fragment);
 
 
 // неактивный режим, валидация
+
 var adForm = document.querySelector('.ad-form');
 var adFormFieldsets = adForm.children;
-for (var j = 0; j < adFormFieldsets.length; j++) {
-  adFormFieldsets[j].disabled = true;
-}
+
 var mapFilters = mapBlock.querySelector('.map__filters').children;
-for (var k = 0; k < mapFilters.length; k++) {
-  mapFilters[k].disabled = true;
-}
+
 var mainPin = mapBlock.querySelector('.map__pin--main');
 var advertAdressInput = adForm.querySelector('#address');
 advertAdressInput.value = Math.round(mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(mainPin.offsetTop + MAIN_PIN_HEIGHT / 2);
+
+window.onload = function () {
+  for (var j = 0; j < adFormFieldsets.length; j++) {
+    adFormFieldsets[j].disabled = true;
+  }
+  for (var k = 0; k < mapFilters.length; k++) {
+    mapFilters[k].disabled = true;
+  }
+};
 
 var activateMap = function () {
   mapBlock.classList.remove('map--faded');
@@ -131,8 +137,8 @@ var activateMap = function () {
   for (var j = 0; j < adFormFieldsets.length; j++) {
     adFormFieldsets[j].disabled = false;
   }
-  for (var i = 0; i < mapFilters.length; i++) {
-    mapFilters[i].disabled = false;
+  for (var k = 0; k < mapFilters.length; k++) {
+    mapFilters[k].disabled = false;
   }
   advertAdressInput.value = Math.round(mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(mainPin.offsetTop + MAIN_PIN_HEIGHT + MAIN_PIN_TAIL);
   advertAdressInput.disabled = true;
@@ -170,29 +176,26 @@ priceAdvertInput.addEventListener('invalid', function () {
   if (priceAdvertInput.validity.rangeUnderflow) {
     priceAdvertInput.setCustomValidity('Выбранная Вами цена меньше минимально допустимой цены в ' + priceAdvertInput.min + ' рублей');
   } else {
-    priceAdvertInput.setCustomValidity('')
+    priceAdvertInput.setCustomValidity('');
   }
-})
+});
 
 var roomsAdvertSelect = adForm.querySelector('#room_number');
 var guestsAdvertSelect = adForm.querySelector('#capacity');
 
+var rooms
 var rooomsTypetoGuests = {
   1: '1',
   2: '2',
   3: '3',
   100: '0'
 };
-var onGuestAdvertSelectChange = function (evt) {
-  console.log(evt.target.value)
-}
-var onRoomsAdvertSelectChange = function (evt) {
-  guestsAdvertSelect.value = rooomsTypetoGuests[evt.target.value];
-  var roomsOptions = roomsAdvertSelect.children;
-  console.log(evt.target.value)
-  for (var i = 0; i < roomsOptions.length; i++) {
 
+var onRoomsAdvertSelectChange = function (evt) {
+  if (guestsAdvertSelect.value !== rooomsTypetoGuests[evt.target.value]) {
+    guestsAdvertSelect.setCustomValidity('К сожалению, Вы выбрали неподходящее количество гостей для квартиры с таким количеством комнат.')
   }
+  guestsAdvertSelect.value = rooomsTypetoGuests[evt.target.value];
 };
 roomsAdvertSelect.addEventListener('change', onRoomsAdvertSelectChange);
 guestsAdvertSelect.addEventListener('change', onGuestAdvertSelectChange);
