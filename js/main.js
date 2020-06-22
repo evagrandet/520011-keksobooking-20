@@ -214,6 +214,8 @@ var rooomsTypetoGuests = {
 var onRoomsAdvertSelectChange = function (evt) {
   if (guestsAdvertSelect.value !== rooomsTypetoGuests[evt.target.value]) {
     guestsAdvertSelect.setCustomValidity('К сожалению, Вы выбрали неподходящее количество гостей для квартиры с таким количеством комнат.');
+  } else {
+    guestsAdvertSelect.setCustomValidity('');
   }
   guestsAdvertSelect.value = rooomsTypetoGuests[evt.target.value];
 };
