@@ -111,17 +111,21 @@ for (var i = 0; i < adverts.length; i++) {
 mapPinsList.appendChild(fragment);
 
 
-// неактивный режим, валидация
-
+// нахожу форму и все ее элементы
 var adForm = document.querySelector('.ad-form');
 var adFormFieldsets = adForm.children;
 
+// нахожу все дочерние элементы у блока с фильтрами карты
 var mapFilters = mapBlock.querySelector('.map__filters').children;
 
+// нахожу главный пин, при взаимодействии с которым происходит переход режима карты из неактивного в активный
 var mainPin = mapBlock.querySelector('.map__pin--main');
+
+// нахожу поле адреса и сразу туда вписываю значение центра главного пина
 var advertAdressInput = adForm.querySelector('#address');
 advertAdressInput.value = Math.round(mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(mainPin.offsetTop + MAIN_PIN_HEIGHT / 2);
 
+// при загрузке страницы сразу прохожусь по всем полям форм/фильтров и перевожу их в нактивное состояние
 window.onload = function () {
   for (var j = 0; j < adFormFieldsets.length; j++) {
     adFormFieldsets[j].disabled = true;
@@ -131,6 +135,7 @@ window.onload = function () {
   }
 };
 
+// функция, которая срабатывает при взаимодействии с главным пином (удаляются классы у блоков карты и формы, перевожу поля формы и фильтра в активное состояние, меняю значение адреса главной метки [смещаю его с центра на ее 'хвост'], затем выключаю поле адреса)
 var activateMap = function () {
   mapBlock.classList.remove('map--faded');
   adForm.classList.remove('ad-form--disabled');
@@ -144,23 +149,31 @@ var activateMap = function () {
   advertAdressInput.disabled = true;
 };
 
+
+// функция, которая будет срабатывать на нажатии левой кнопки мыши, и которая будет активировать карту
 var onMainPinMousedown = function (evt) {
   var buttonPressed = evt.which;
   if (buttonPressed === 1) {
     activateMap();
   }
 };
+
+// функция, которая будет срабатывать на нажатии кнопки ENTER, и которая будет активировать карту
 var onMainPinKeydown = function (evt) {
   if (evt.key === 'Enter') {
     activateMap();
   }
 };
+
+// добавляю два обработчика событий на главный пин
 mainPin.addEventListener('mousedown', onMainPinMousedown);
 mainPin.addEventListener('keydown', onMainPinKeydown);
 
+// выношу в переменные поля цены и типа жилья
 var typeAdvertSelect = adForm.querySelector('#type');
 var priceAdvertInput = adForm.querySelector('#price');
 
+// структура данных для выражения типа и минимальной цены жилья
 var priceTypeToRange = {
   bungalo: '0',
   flat: '1000',
@@ -168,10 +181,15 @@ var priceTypeToRange = {
   palace: '10000'
 };
 
+// функция, которая будет менять в поле цены плейсхолдер и минимальное значение в зависимости от выбранного типа жилья
 var onTypeAdvertSelectChange = function (evt) {
   priceAdvertInput.placeholder = priceTypeToRange[evt.target.value];
   priceAdvertInput.min = priceTypeToRange[evt.target.value];
 };
+// добавляю обработчик события с функцией выше на селект выбора типа жилья
+typeAdvertSelect.addEventListener('change', onTypeAdvertSelectChange);
+
+// обратботчик события, который сработает, если при отправке данных на сервер выяснится, что пользователь ввел цену меньше, чем необходимо при выбранном типе жилья
 priceAdvertInput.addEventListener('invalid', function () {
   if (priceAdvertInput.validity.rangeUnderflow) {
     priceAdvertInput.setCustomValidity('Выбранная Вами цена меньше минимально допустимой цены в ' + priceAdvertInput.min + ' рублей');
@@ -180,23 +198,48 @@ priceAdvertInput.addEventListener('invalid', function () {
   }
 });
 
+// переменные для полей количества комнат и вместимости
 var roomsAdvertSelect = adForm.querySelector('#room_number');
 var guestsAdvertSelect = adForm.querySelector('#capacity');
 
-var rooms
+// очень странные дела, вообще это для всвязывания между собой количества комнат и вместимости, но как-то совсем неявно выглядит
 var rooomsTypetoGuests = {
   1: '1',
   2: '2',
   3: '3',
   100: '0'
-};
+}; // и я не знаю, в какую еще структуру данных это выделить
 
+// функция, которая связывает поля количества комнат и количества гостей + подскажет пользователю, если он выбрал не то количество комнат
 var onRoomsAdvertSelectChange = function (evt) {
   if (guestsAdvertSelect.value !== rooomsTypetoGuests[evt.target.value]) {
-    guestsAdvertSelect.setCustomValidity('К сожалению, Вы выбрали неподходящее количество гостей для квартиры с таким количеством комнат.')
+    guestsAdvertSelect.setCustomValidity('К сожалению, Вы выбрали неподходящее количество гостей для квартиры с таким количеством комнат.');
   }
   guestsAdvertSelect.value = rooomsTypetoGuests[evt.target.value];
 };
+
+// обработчик событий для полей количества комнат
 roomsAdvertSelect.addEventListener('change', onRoomsAdvertSelectChange);
-guestsAdvertSelect.addEventListener('change', onGuestAdvertSelectChange);
-typeAdvertSelect.addEventListener('change', onTypeAdvertSelectChange);
+
+// выношу в переменные поля въезда и выезда в/из жилья
+var checkInSelect = adForm.querySelector('#timein');
+var checkOutSelect = adForm.querySelector('#timeout');
+
+// функция для поля въезда
+var onCheckInSelectChange = function (evt) {
+  synchronizeTime(evt, checkOutSelect);
+};
+
+// функция для поля выезда
+var onCheckOutSelectChange = function (evt) {
+  synchronizeTime(evt, checkInSelect);
+};
+
+// функция, которая синхронизирует поля въезда-выезда между собой
+var synchronizeTime = function (evt, element) {
+  element.value = evt.target.value;
+};
+
+// добавляю обработчики событий на поля въезда-выезда
+checkInSelect.addEventListener('change', onCheckInSelectChange);
+checkOutSelect.addEventListener('change', onCheckOutSelectChange);
