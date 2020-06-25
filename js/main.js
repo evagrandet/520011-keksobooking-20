@@ -19,6 +19,7 @@ var MAIN_PIN_HEIGHT = 65;
 var MAIN_PIN_TAIL = 22;
 var MAX_Y_COORDINATE = 630;
 var MIN_Y_COORDINATE = 130;
+var MAX_ROOMS_COUNT = 100;
 
 
 // получаю элемент карты из DOM, записываю его в переменную
@@ -127,8 +128,8 @@ advertAdressInput.value = Math.round(mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + 
 
 // при загрузке страницы сразу прохожусь по всем полям форм/фильтров и перевожу их в нактивное состояние
 window.onload = function () {
-  for (var j = 0; j < adFormFieldsets.length; j++) {
-    adFormFieldsets[j].disabled = true;
+  for (var i = 0; i < adFormFieldsets.length; i++) {
+    adFormFieldsets[i].disabled = true;
   }
   for (var k = 0; k < mapFilters.length; k++) {
     mapFilters[k].disabled = true;
@@ -202,26 +203,28 @@ priceAdvertInput.addEventListener('invalid', function () {
 var roomsAdvertSelect = adForm.querySelector('#room_number');
 var guestsAdvertSelect = adForm.querySelector('#capacity');
 
-// очень странные дела, вообще это для всвязывания между собой количества комнат и вместимости, но как-то совсем неявно выглядит
-var rooomsTypetoGuests = {
-  1: '1',
-  2: '2',
-  3: '3',
-  100: '0'
-}; // и я не знаю, в какую еще структуру данных это выделить
-
-// функция, которая связывает поля количества комнат и количества гостей + подскажет пользователю, если он выбрал не то количество комнат
+// функция, которая дизейблит варианты количества гостей, если они не соотвествуют условию
 var onRoomsAdvertSelectChange = function (evt) {
-  if (guestsAdvertSelect.value !== rooomsTypetoGuests[evt.target.value]) {
-    guestsAdvertSelect.setCustomValidity('К сожалению, Вы выбрали неподходящее количество гостей для квартиры с таким количеством комнат.');
-  } else {
-    guestsAdvertSelect.setCustomValidity('');
+  var guestsOptions = guestsAdvertSelect.children;
+  for (var i = 0; i < guestsOptions.length; i++) {
+    if (+evt.target.value === 100 && +guestsOptions[i].value !== 0) {
+      guestsOptions[i].disabled = true;
+    } else if (+evt.target.value < +guestsOptions[i].value || +guestsOptions[i].value === 0) {
+      guestsOptions[i].disabled = true;
+    }
+    else {
+      guestsOptions[i].disabled = false;
+    }
   }
-  guestsAdvertSelect.value = rooomsTypetoGuests[evt.target.value];
 };
+
+var onGuestsAdvertSelectChange = function () {
+  var roomsOptions = roomsAdvertSelect.children;
+}
 
 // обработчик событий для полей количества комнат
 roomsAdvertSelect.addEventListener('change', onRoomsAdvertSelectChange);
+guestsAdvertSelect.addEventListener('change', onGuestsAdvertSelectChange)
 
 // выношу в переменные поля въезда и выезда в/из жилья
 var checkInSelect = adForm.querySelector('#timein');
