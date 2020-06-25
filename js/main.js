@@ -218,8 +218,21 @@ var onRoomsAdvertSelectChange = function (evt) {
   }
 };
 
-var onGuestsAdvertSelectChange = function () {
+// функция, которая будет дизейблить комнаты в зависимости от выбранного количества комнат (если вдруг пользователь начнет сначала выбирать количество гостей)
+var onGuestsAdvertSelectChange = function (evt) {
   var roomsOptions = roomsAdvertSelect.children;
+  for (var i = 0; i < roomsOptions.length; i++) {
+    if (+evt.target.value === 0 && +roomsOptions[i].value !== 100) {
+      roomsOptions[i].disabled = true;
+    } else if (evt.target.value < roomsOptions[i].value && +roomsOptions[i].value !== 100) {
+      roomsOptions[i].disabled = true;
+    } else if (+evt.target.value !== 0 && +roomsOptions[i].value === 100) {
+      roomsOptions[i].disabled = true;
+    }
+    else {
+      roomsOptions[i].disabled = false;
+    }
+  }
 }
 
 // обработчик событий для полей количества комнат
