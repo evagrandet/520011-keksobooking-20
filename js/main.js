@@ -19,7 +19,6 @@ var MAIN_PIN_HEIGHT = 65;
 var MAIN_PIN_TAIL = 22;
 var MAX_Y_COORDINATE = 630;
 var MIN_Y_COORDINATE = 130;
-var MAX_ROOMS_COUNT = 100;
 
 
 // получаю элемент карты из DOM, записываю его в переменную
@@ -128,8 +127,8 @@ advertAdressInput.value = Math.round(mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + 
 
 // при загрузке страницы сразу прохожусь по всем полям форм/фильтров и перевожу их в нактивное состояние
 window.onload = function () {
-  for (var i = 0; i < adFormFieldsets.length; i++) {
-    adFormFieldsets[i].disabled = true;
+  for (var j = 0; j < adFormFieldsets.length; j++) {
+    adFormFieldsets[j].disabled = true;
   }
   for (var k = 0; k < mapFilters.length; k++) {
     mapFilters[k].disabled = true;
@@ -206,14 +205,13 @@ var guestsAdvertSelect = adForm.querySelector('#capacity');
 // функция, которая дизейблит варианты количества гостей, если они не соотвествуют условию
 var onRoomsAdvertSelectChange = function (evt) {
   var guestsOptions = guestsAdvertSelect.children;
-  for (var i = 0; i < guestsOptions.length; i++) {
-    if (+evt.target.value === 100 && +guestsOptions[i].value !== 0) {
-      guestsOptions[i].disabled = true;
-    } else if (+evt.target.value < +guestsOptions[i].value || +guestsOptions[i].value === 0) {
-      guestsOptions[i].disabled = true;
-    }
-    else {
-      guestsOptions[i].disabled = false;
+  for (var m = 0; m < guestsOptions.length; m++) {
+    if (+evt.target.value === 100 && +guestsOptions[m].value !== 0) {
+      guestsOptions[m].disabled = true;
+    } else if (+evt.target.value < +guestsOptions[m].value || +guestsOptions[m].value === 0) {
+      guestsOptions[m].disabled = true;
+    } else {
+      guestsOptions[m].disabled = false;
     }
   }
 };
@@ -221,23 +219,22 @@ var onRoomsAdvertSelectChange = function (evt) {
 // функция, которая будет дизейблить комнаты в зависимости от выбранного количества комнат (если вдруг пользователь начнет сначала выбирать количество гостей)
 var onGuestsAdvertSelectChange = function (evt) {
   var roomsOptions = roomsAdvertSelect.children;
-  for (var i = 0; i < roomsOptions.length; i++) {
-    if (+evt.target.value === 0 && +roomsOptions[i].value !== 100) {
-      roomsOptions[i].disabled = true;
-    } else if (evt.target.value < roomsOptions[i].value && +roomsOptions[i].value !== 100) {
-      roomsOptions[i].disabled = true;
-    } else if (+evt.target.value !== 0 && +roomsOptions[i].value === 100) {
-      roomsOptions[i].disabled = true;
-    }
-    else {
-      roomsOptions[i].disabled = false;
+  for (var n = 0; n < roomsOptions.length; n++) {
+    if (+evt.target.value === 0 && +roomsOptions[n].value !== 100) {
+      roomsOptions[n].disabled = true;
+    } else if (evt.target.value < roomsOptions[n].value && +roomsOptions[n].value !== 100) {
+      roomsOptions[n].disabled = true;
+    } else if (+evt.target.value !== 0 && +roomsOptions[n].value === 100) {
+      roomsOptions[n].disabled = true;
+    } else {
+      roomsOptions[n].disabled = false;
     }
   }
-}
+};
 
 // обработчик событий для полей количества комнат
 roomsAdvertSelect.addEventListener('change', onRoomsAdvertSelectChange);
-guestsAdvertSelect.addEventListener('change', onGuestsAdvertSelectChange)
+guestsAdvertSelect.addEventListener('change', onGuestsAdvertSelectChange);
 
 // выношу в переменные поля въезда и выезда в/из жилья
 var checkInSelect = adForm.querySelector('#timein');
