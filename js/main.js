@@ -270,7 +270,7 @@ var activateMap = function () {
 };
 // функция, которая будет срабатывать на нажатии левой кнопки мыши, и которая будет активировать карту
 var onMainPinMousedown = function (evt) {
-  var buttonPressed = evt.which;
+  var buttonPressed = evt.buttons;
   if (buttonPressed === 1) {
     activateMap();
   }
