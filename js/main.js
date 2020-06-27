@@ -135,20 +135,6 @@ window.onload = function () {
   }
 };
 
-// функция, которая срабатывает при взаимодействии с главным пином (удаляются классы у блоков карты и формы, перевожу поля формы и фильтра в активное состояние, меняю значение адреса главной метки [смещаю его с центра на ее 'хвост'], затем выключаю поле адреса)
-var activateMap = function () {
-  mapBlock.classList.remove('map--faded');
-  adForm.classList.remove('ad-form--disabled');
-  for (var j = 0; j < adFormFieldsets.length; j++) {
-    adFormFieldsets[j].disabled = false;
-  }
-  for (var k = 0; k < mapFilters.length; k++) {
-    mapFilters[k].disabled = false;
-  }
-  advertAdressInput.value = Math.round(mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(mainPin.offsetTop + MAIN_PIN_HEIGHT + MAIN_PIN_TAIL);
-  advertAdressInput.disabled = true;
-};
-
 
 // функция, которая будет срабатывать на нажатии левой кнопки мыши, и которая будет активировать карту
 var onMainPinMousedown = function (evt) {
@@ -166,8 +152,6 @@ var onMainPinKeydown = function (evt) {
 };
 
 // добавляю два обработчика событий на главный пин
-mainPin.addEventListener('mousedown', onMainPinMousedown);
-mainPin.addEventListener('keydown', onMainPinKeydown);
 
 // выношу в переменные поля цены и типа жилья
 var typeAdvertSelect = adForm.querySelector('#type');
@@ -186,17 +170,7 @@ var onTypeAdvertSelectChange = function (evt) {
   priceAdvertInput.placeholder = priceTypeToRange[evt.target.value];
   priceAdvertInput.min = priceTypeToRange[evt.target.value];
 };
-// добавляю обработчик события с функцией выше на селект выбора типа жилья
-typeAdvertSelect.addEventListener('change', onTypeAdvertSelectChange);
 
-// обратботчик события, который сработает, если при отправке данных на сервер выяснится, что пользователь ввел цену меньше, чем необходимо при выбранном типе жилья
-priceAdvertInput.addEventListener('invalid', function () {
-  if (priceAdvertInput.validity.rangeUnderflow) {
-    priceAdvertInput.setCustomValidity('Выбранная Вами цена меньше минимально допустимой цены в ' + priceAdvertInput.min + ' рублей');
-  } else {
-    priceAdvertInput.setCustomValidity('');
-  }
-});
 
 // переменные для полей количества комнат и вместимости
 var roomsAdvertSelect = adForm.querySelector('#room_number');
@@ -232,9 +206,6 @@ var onGuestsAdvertSelectChange = function (evt) {
   }
 };
 
-// обработчик событий для полей количества комнат
-roomsAdvertSelect.addEventListener('change', onRoomsAdvertSelectChange);
-guestsAdvertSelect.addEventListener('change', onGuestsAdvertSelectChange);
 
 // выношу в переменные поля въезда и выезда в/из жилья
 var checkInSelect = adForm.querySelector('#timein');
@@ -255,6 +226,35 @@ var synchronizeTime = function (evt, element) {
   element.value = evt.target.value;
 };
 
-// добавляю обработчики событий на поля въезда-выезда
-checkInSelect.addEventListener('change', onCheckInSelectChange);
-checkOutSelect.addEventListener('change', onCheckOutSelectChange);
+// функция, которая срабатывает при взаимодействии с главным пином (удаляются классы у блоков карты и формы, перевожу поля формы и фильтра в активное состояние, меняю значение адреса главной метки [смещаю его с центра на ее 'хвост'], затем выключаю поле адреса)
+var activateMap = function () {
+  mapBlock.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
+  for (var j = 0; j < adFormFieldsets.length; j++) {
+    adFormFieldsets[j].disabled = false;
+  }
+  for (var k = 0; k < mapFilters.length; k++) {
+    mapFilters[k].disabled = false;
+  }
+  advertAdressInput.value = Math.round(mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(mainPin.offsetTop + MAIN_PIN_HEIGHT + MAIN_PIN_TAIL);
+  advertAdressInput.disabled = true;
+  mainPin.addEventListener('mousedown', onMainPinMousedown);
+  mainPin.addEventListener('keydown', onMainPinKeydown);
+  // добавляю обработчик события с функцией выше на селект выбора типа жилья
+  typeAdvertSelect.addEventListener('change', onTypeAdvertSelectChange);
+
+  // обратботчик события, который сработает, если при отправке данных на сервер выяснится, что пользователь ввел цену меньше, чем необходимо при выбранном типе жилья
+  priceAdvertInput.addEventListener('invalid', function () {
+    if (priceAdvertInput.validity.rangeUnderflow) {
+      priceAdvertInput.setCustomValidity('Выбранная Вами цена меньше минимально допустимой цены в ' + priceAdvertInput.min + ' рублей');
+    } else {
+      priceAdvertInput.setCustomValidity('');
+    }
+  });
+  // обработчик событий для полей количества комнат
+  roomsAdvertSelect.addEventListener('change', onRoomsAdvertSelectChange);
+  guestsAdvertSelect.addEventListener('change', onGuestsAdvertSelectChange);
+  // добавляю обработчики событий на поля въезда-выезда
+  checkInSelect.addEventListener('change', onCheckInSelectChange);
+  checkOutSelect.addEventListener('change', onCheckOutSelectChange);
+};
