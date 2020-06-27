@@ -20,6 +20,8 @@ var MAIN_PIN_TAIL = 22;
 var MAX_Y_COORDINATE = 630;
 var MIN_Y_COORDINATE = 130;
 
+var MIN_TITLE_LENGTH = 30;
+var MAX_TITLE_LENGTH = 100;
 
 // получаю элемент карты из DOM, записываю его в переменную
 var mapBlock = document.querySelector('.map');
@@ -121,6 +123,7 @@ var mapFilters = mapBlock.querySelector('.map__filters').children;
 // нахожу главный пин, при взаимодействии с которым происходит переход режима карты из неактивного в активный
 var mainPin = mapBlock.querySelector('.map__pin--main');
 
+
 // нахожу поле адреса и сразу туда вписываю значение центра главного пина
 var advertAdressInput = adForm.querySelector('#address');
 advertAdressInput.value = Math.round(mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(mainPin.offsetTop + MAIN_PIN_HEIGHT / 2);
@@ -135,25 +138,8 @@ window.onload = function () {
   }
 };
 
-
-// функция, которая будет срабатывать на нажатии левой кнопки мыши, и которая будет активировать карту
-var onMainPinMousedown = function (evt) {
-  var buttonPressed = evt.which;
-  if (buttonPressed === 1) {
-    activateMap();
-  }
-};
-
-// функция, которая будет срабатывать на нажатии кнопки ENTER, и которая будет активировать карту
-var onMainPinKeydown = function (evt) {
-  if (evt.key === 'Enter') {
-    activateMap();
-  }
-};
-
-// добавляю два обработчика событий на главный пин
-
-// выношу в переменные поля цены и типа жилья
+// выношу в переменные поля заголовка, цены и типа жилья
+var titleAdvertInput = adForm.querySelector('#title');
 var typeAdvertSelect = adForm.querySelector('#type');
 var priceAdvertInput = adForm.querySelector('#price');
 
@@ -182,7 +168,9 @@ var onRoomsAdvertSelectChange = function (evt) {
   for (var m = 0; m < guestsOptions.length; m++) {
     if (+evt.target.value === 100 && +guestsOptions[m].value !== 0) {
       guestsOptions[m].disabled = true;
-    } else if (+evt.target.value < +guestsOptions[m].value || +guestsOptions[m].value === 0) {
+    } else if (+evt.target.value < +guestsOptions[m].value && +guestsOptions[m].value !== 0) {
+      guestsOptions[m].disabled = true;
+    } else if (+evt.target.value !== 100 && +guestsOptions[m].value === 0) {
       guestsOptions[m].disabled = true;
     } else {
       guestsOptions[m].disabled = false;
@@ -238,8 +226,7 @@ var activateMap = function () {
   }
   advertAdressInput.value = Math.round(mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(mainPin.offsetTop + MAIN_PIN_HEIGHT + MAIN_PIN_TAIL);
   advertAdressInput.disabled = true;
-  mainPin.addEventListener('mousedown', onMainPinMousedown);
-  mainPin.addEventListener('keydown', onMainPinKeydown);
+
   // добавляю обработчик события с функцией выше на селект выбора типа жилья
   typeAdvertSelect.addEventListener('change', onTypeAdvertSelectChange);
 
@@ -251,6 +238,29 @@ var activateMap = function () {
       priceAdvertInput.setCustomValidity('');
     }
   });
+  // добавляю для него обработчик события для дополнительной кастомной валидации поля
+  titleAdvertInput.addEventListener('invalid', function () {
+    if (titleAdvertInput.validity.tooShort) {
+      titleAdvertInput.setCustomValidity('Заголовок объявления должен состоять минимум из 30 символов');
+    } else if (titleAdvertInput.validity.tooLong) {
+      titleAdvertInput.setCustomValidity('Заголовок объявления не должен превышать 100 символов');
+    } else if (titleAdvertInput.validity.valueMissing) {
+      titleAdvertInput.setCustomValidity('Обязательное поле');
+    } else {
+      titleAdvertInput.setCustomValidity('');
+    }
+  });
+  // добавляю еще один обработчик, чтобы повысить информативность
+  titleAdvertInput.addEventListener('input', function () {
+    var valueLength = titleAdvertInput.value.length;
+    if (valueLength < MIN_TITLE_LENGTH) {
+      titleAdvertInput.setCustomValidity('Ещё ' + (MIN_TITLE_LENGTH - valueLength) + ' симв.');
+    } else if (valueLength > MAX_TITLE_LENGTH) {
+      titleAdvertInput.setCustomValidity('Удалите лишние ' + (valueLength - MAX_TITLE_LENGTH) + ' симв.');
+    } else {
+      titleAdvertInput.setCustomValidity('');
+    }
+  });
   // обработчик событий для полей количества комнат
   roomsAdvertSelect.addEventListener('change', onRoomsAdvertSelectChange);
   guestsAdvertSelect.addEventListener('change', onGuestsAdvertSelectChange);
@@ -258,3 +268,33 @@ var activateMap = function () {
   checkInSelect.addEventListener('change', onCheckInSelectChange);
   checkOutSelect.addEventListener('change', onCheckOutSelectChange);
 };
+// функция, которая будет срабатывать на нажатии левой кнопки мыши, и которая будет активировать карту
+var onMainPinMousedown = function (evt) {
+  var buttonPressed = evt.which;
+  if (buttonPressed === 1) {
+    activateMap();
+  }
+};
+
+// функция, которая будет срабатывать на нажатии кнопки ENTER, и которая будет активировать карту
+var onMainPinKeydown = function (evt) {
+  if (evt.key === 'Enter') {
+    activateMap();
+  }
+};
+
+// добавляю два обработчика событий на главный пин
+mainPin.addEventListener('mousedown', onMainPinMousedown);
+mainPin.addEventListener('keydown', onMainPinKeydown);
+
+
+var submitButton = adForm.querySelector('.ad-form__submit');
+
+var onSubmitSubmitButton = function () {
+  typeAdvertSelect.removeEventListener('change', onTypeAdvertSelectChange);
+  roomsAdvertSelect.removeEventListener('change', onRoomsAdvertSelectChange);
+  guestsAdvertSelect.removeEventListener('change', onGuestsAdvertSelectChange);
+  checkInSelect.removeEventListener('change', onCheckInSelectChange);
+  checkOutSelect.removeEventListener('change', onCheckOutSelectChange);
+};
+submitButton.addEventListener('submit', onSubmitSubmitButton);
