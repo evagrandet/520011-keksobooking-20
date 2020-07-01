@@ -211,6 +211,7 @@ var synchronizeTime = function (evt, element) {
   element.value = evt.target.value;
 };
 
+// функция обработки события невалидности поля цены
 var onPriceAdvertInputInvalid = function () {
   if (priceAdvertInput.validity.rangeUnderflow) {
     priceAdvertInput.setCustomValidity('Выбранная Вами цена меньше минимально допустимой цены в ' + priceAdvertInput.min + ' рублей');
@@ -219,6 +220,7 @@ var onPriceAdvertInputInvalid = function () {
   }
 };
 
+// функция обработки события невалидности поля заголовка
 var onTitleAdvertInputInvalid = function () {
   if (titleAdvertInput.validity.tooShort) {
     titleAdvertInput.setCustomValidity('Заголовок объявления должен состоять минимум из 30 символов');
@@ -231,6 +233,7 @@ var onTitleAdvertInputInvalid = function () {
   }
 };
 
+// функция обработки события ввода заголовка
 var onTitleAdvertInputInput = function () {
   var valueLength = titleAdvertInput.value.length;
   if (valueLength < MIN_TITLE_LENGTH) {
@@ -242,7 +245,8 @@ var onTitleAdvertInputInput = function () {
   }
 };
 
-var disableForms = function () {
+// функция включения форм
+var enableForms = function () {
   for (var j = 0; j < adFormFieldsets.length; j++) {
     adFormFieldsets[j].disabled = false;
   }
@@ -251,10 +255,11 @@ var disableForms = function () {
   }
 };
 
+// функция высчитывает координаты пина главного, подставляет их в input и отключает его
 var changeAdvertAddressInputValue = function () {
   advertAddressInput.value = Math.round(mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(mainPin.offsetTop + MAIN_PIN_HEIGHT + MAIN_PIN_TAIL);
   advertAddressInput.disabled = true;
-}
+};
 
 // функция, которая срабатывает при взаимодействии с главным пином (удаляются классы у блоков карты и формы, перевожу поля формы и фильтра в активное состояние, меняю значение адреса главной метки [смещаю его с центра на ее 'хвост'], затем выключаю поле адреса)
 var activateMap = function () {
@@ -262,7 +267,8 @@ var activateMap = function () {
   adForm.classList.remove('ad-form--disabled');
   // разом добавляю все пины-объявления в конец элемента, в котором должна быть разметка пинов
   mapPinsList.appendChild(fragment);
-  disableForms();
+  // вызываю функции включения форм и определения адреса главного пина
+  enableForms();
   changeAdvertAddressInputValue();
 
   // обратботчик события, который сработает, если при отправке данных на сервер выяснится, что пользователь ввел цену меньше, чем необходимо при выбранном типе жилья
@@ -301,6 +307,7 @@ mainPin.addEventListener('keydown', onMainPinKeydown);
 
 
 var onSubmitAdForm = function () {
+  // удаление всех обработчиков событий
   priceAdvertInput.removeEventListener('invalid', onPriceAdvertInputInvalid);
   titleAdvertInput.removeEventListener('invalid', onTitleAdvertInputInvalid);
   titleAdvertInput.removeEventListener('input', onTitleAdvertInputInput);
