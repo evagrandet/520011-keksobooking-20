@@ -249,10 +249,12 @@ var disableForms = function () {
   for (var k = 0; k < mapFilters.length; k++) {
     mapFilters[k].disabled = false;
   }
-  advertAddressInput.value = Math.round(mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(mainPin.offsetTop + MAIN_PIN_HEIGHT + MAIN_PIN_TAIL);
-  advertAddressInput.disabled = true;
 };
 
+var changeAdvertAddressInputValue = function () {
+  advertAddressInput.value = Math.round(mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(mainPin.offsetTop + MAIN_PIN_HEIGHT + MAIN_PIN_TAIL);
+  advertAddressInput.disabled = true;
+}
 
 // функция, которая срабатывает при взаимодействии с главным пином (удаляются классы у блоков карты и формы, перевожу поля формы и фильтра в активное состояние, меняю значение адреса главной метки [смещаю его с центра на ее 'хвост'], затем выключаю поле адреса)
 var activateMap = function () {
@@ -261,6 +263,7 @@ var activateMap = function () {
   // разом добавляю все пины-объявления в конец элемента, в котором должна быть разметка пинов
   mapPinsList.appendChild(fragment);
   disableForms();
+  changeAdvertAddressInputValue();
 
   // обратботчик события, который сработает, если при отправке данных на сервер выяснится, что пользователь ввел цену меньше, чем необходимо при выбранном типе жилья
   priceAdvertInput.addEventListener('invalid', onPriceAdvertInputInvalid);
