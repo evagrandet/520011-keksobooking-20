@@ -109,9 +109,6 @@ for (var i = 0; i < adverts.length; i++) {
   fragment.appendChild(renderAdverts(adverts[i]));
 }
 
-// разом добавляю все пины-объявления в конец элемента, в котором должна быть разметка пинов
-mapPinsList.appendChild(fragment);
-
 
 // нахожу форму и все ее элементы
 var adForm = document.querySelector('.ad-form');
@@ -125,8 +122,8 @@ var mainPin = mapBlock.querySelector('.map__pin--main');
 
 
 // нахожу поле адреса и сразу туда вписываю значение центра главного пина
-var advertAdressInput = adForm.querySelector('#address');
-advertAdressInput.value = Math.round(mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(mainPin.offsetTop + MAIN_PIN_HEIGHT / 2);
+var advertAddressInput = adForm.querySelector('#address');
+advertAddressInput.value = Math.round(mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(mainPin.offsetTop + MAIN_PIN_HEIGHT / 2);
 
 // при загрузке страницы сразу прохожусь по всем полям форм/фильтров и перевожу их в нактивное состояние
 window.onload = function () {
@@ -166,11 +163,11 @@ var guestsAdvertSelect = adForm.querySelector('#capacity');
 var onRoomsAdvertSelectChange = function (evt) {
   var guestsOptions = guestsAdvertSelect.children;
   for (var m = 0; m < guestsOptions.length; m++) {
-    if (+evt.target.value === 100 && +guestsOptions[m].value !== 0) {
+    if (evt.target.value === '100' && guestsOptions[m].value !== '0') {
       guestsOptions[m].disabled = true;
-    } else if (+evt.target.value < +guestsOptions[m].value && +guestsOptions[m].value !== 0) {
+    } else if (evt.target.value < guestsOptions[m].value && guestsOptions[m].value !== '0') {
       guestsOptions[m].disabled = true;
-    } else if (+evt.target.value !== 100 && +guestsOptions[m].value === 0) {
+    } else if (evt.target.value !== '100' && guestsOptions[m].value === '0') {
       guestsOptions[m].disabled = true;
     } else {
       guestsOptions[m].disabled = false;
@@ -214,53 +211,65 @@ var synchronizeTime = function (evt, element) {
   element.value = evt.target.value;
 };
 
-// функция, которая срабатывает при взаимодействии с главным пином (удаляются классы у блоков карты и формы, перевожу поля формы и фильтра в активное состояние, меняю значение адреса главной метки [смещаю его с центра на ее 'хвост'], затем выключаю поле адреса)
-var activateMap = function () {
-  mapBlock.classList.remove('map--faded');
-  adForm.classList.remove('ad-form--disabled');
+var onPriceAdvertInputInvalid = function () {
+  if (priceAdvertInput.validity.rangeUnderflow) {
+    priceAdvertInput.setCustomValidity('Выбранная Вами цена меньше минимально допустимой цены в ' + priceAdvertInput.min + ' рублей');
+  } else {
+    priceAdvertInput.setCustomValidity('');
+  }
+};
+
+var onTitleAdvertInputInvalid = function () {
+  if (titleAdvertInput.validity.tooShort) {
+    titleAdvertInput.setCustomValidity('Заголовок объявления должен состоять минимум из 30 символов');
+  } else if (titleAdvertInput.validity.tooLong) {
+    titleAdvertInput.setCustomValidity('Заголовок объявления не должен превышать 100 символов');
+  } else if (titleAdvertInput.validity.valueMissing) {
+    titleAdvertInput.setCustomValidity('Обязательное поле');
+  } else {
+    titleAdvertInput.setCustomValidity('');
+  }
+};
+
+var onTitleAdvertInputInput = function () {
+  var valueLength = titleAdvertInput.value.length;
+  if (valueLength < MIN_TITLE_LENGTH) {
+    titleAdvertInput.setCustomValidity('Ещё ' + (MIN_TITLE_LENGTH - valueLength) + ' симв.');
+  } else if (valueLength > MAX_TITLE_LENGTH) {
+    titleAdvertInput.setCustomValidity('Удалите лишние ' + (valueLength - MAX_TITLE_LENGTH) + ' симв.');
+  } else {
+    titleAdvertInput.setCustomValidity('');
+  }
+};
+
+var disableForms = function () {
   for (var j = 0; j < adFormFieldsets.length; j++) {
     adFormFieldsets[j].disabled = false;
   }
   for (var k = 0; k < mapFilters.length; k++) {
     mapFilters[k].disabled = false;
   }
-  advertAdressInput.value = Math.round(mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(mainPin.offsetTop + MAIN_PIN_HEIGHT + MAIN_PIN_TAIL);
-  advertAdressInput.disabled = true;
+  advertAddressInput.value = Math.round(mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(mainPin.offsetTop + MAIN_PIN_HEIGHT + MAIN_PIN_TAIL);
+  advertAddressInput.disabled = true;
+};
 
-  // добавляю обработчик события с функцией выше на селект выбора типа жилья
-  typeAdvertSelect.addEventListener('change', onTypeAdvertSelectChange);
+
+// функция, которая срабатывает при взаимодействии с главным пином (удаляются классы у блоков карты и формы, перевожу поля формы и фильтра в активное состояние, меняю значение адреса главной метки [смещаю его с центра на ее 'хвост'], затем выключаю поле адреса)
+var activateMap = function () {
+  mapBlock.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
+  // разом добавляю все пины-объявления в конец элемента, в котором должна быть разметка пинов
+  mapPinsList.appendChild(fragment);
+  disableForms();
 
   // обратботчик события, который сработает, если при отправке данных на сервер выяснится, что пользователь ввел цену меньше, чем необходимо при выбранном типе жилья
-  priceAdvertInput.addEventListener('invalid', function () {
-    if (priceAdvertInput.validity.rangeUnderflow) {
-      priceAdvertInput.setCustomValidity('Выбранная Вами цена меньше минимально допустимой цены в ' + priceAdvertInput.min + ' рублей');
-    } else {
-      priceAdvertInput.setCustomValidity('');
-    }
-  });
+  priceAdvertInput.addEventListener('invalid', onPriceAdvertInputInvalid);
   // добавляю для него обработчик события для дополнительной кастомной валидации поля
-  titleAdvertInput.addEventListener('invalid', function () {
-    if (titleAdvertInput.validity.tooShort) {
-      titleAdvertInput.setCustomValidity('Заголовок объявления должен состоять минимум из 30 символов');
-    } else if (titleAdvertInput.validity.tooLong) {
-      titleAdvertInput.setCustomValidity('Заголовок объявления не должен превышать 100 символов');
-    } else if (titleAdvertInput.validity.valueMissing) {
-      titleAdvertInput.setCustomValidity('Обязательное поле');
-    } else {
-      titleAdvertInput.setCustomValidity('');
-    }
-  });
+  titleAdvertInput.addEventListener('invalid', onTitleAdvertInputInvalid);
   // добавляю еще один обработчик, чтобы повысить информативность
-  titleAdvertInput.addEventListener('input', function () {
-    var valueLength = titleAdvertInput.value.length;
-    if (valueLength < MIN_TITLE_LENGTH) {
-      titleAdvertInput.setCustomValidity('Ещё ' + (MIN_TITLE_LENGTH - valueLength) + ' симв.');
-    } else if (valueLength > MAX_TITLE_LENGTH) {
-      titleAdvertInput.setCustomValidity('Удалите лишние ' + (valueLength - MAX_TITLE_LENGTH) + ' симв.');
-    } else {
-      titleAdvertInput.setCustomValidity('');
-    }
-  });
+  titleAdvertInput.addEventListener('input', onTitleAdvertInputInput);
+  // добавляю обработчик события с функцией выше на селект выбора типа жилья
+  typeAdvertSelect.addEventListener('change', onTypeAdvertSelectChange);
   // обработчик событий для полей количества комнат
   roomsAdvertSelect.addEventListener('change', onRoomsAdvertSelectChange);
   guestsAdvertSelect.addEventListener('change', onGuestsAdvertSelectChange);
@@ -268,10 +277,10 @@ var activateMap = function () {
   checkInSelect.addEventListener('change', onCheckInSelectChange);
   checkOutSelect.addEventListener('change', onCheckOutSelectChange);
 };
+
 // функция, которая будет срабатывать на нажатии левой кнопки мыши, и которая будет активировать карту
 var onMainPinMousedown = function (evt) {
-  var buttonPressed = evt.buttons;
-  if (buttonPressed === 1) {
+  if (evt.buttons === 1) {
     activateMap();
   }
 };
@@ -288,13 +297,14 @@ mainPin.addEventListener('mousedown', onMainPinMousedown);
 mainPin.addEventListener('keydown', onMainPinKeydown);
 
 
-var submitButton = adForm.querySelector('.ad-form__submit');
-
-var onSubmitSubmitButton = function () {
+var onSubmitAdForm = function () {
+  priceAdvertInput.removeEventListener('invalid', onPriceAdvertInputInvalid);
+  titleAdvertInput.removeEventListener('invalid', onTitleAdvertInputInvalid);
+  titleAdvertInput.removeEventListener('input', onTitleAdvertInputInput);
   typeAdvertSelect.removeEventListener('change', onTypeAdvertSelectChange);
   roomsAdvertSelect.removeEventListener('change', onRoomsAdvertSelectChange);
   guestsAdvertSelect.removeEventListener('change', onGuestsAdvertSelectChange);
   checkInSelect.removeEventListener('change', onCheckInSelectChange);
   checkOutSelect.removeEventListener('change', onCheckOutSelectChange);
 };
-submitButton.addEventListener('submit', onSubmitSubmitButton);
+adForm.addEventListener('submit', onSubmitAdForm);
