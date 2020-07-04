@@ -159,38 +159,27 @@ var onTypeAdvertSelectChange = function (evt) {
 var roomsAdvertSelect = adForm.querySelector('#room_number');
 var guestsAdvertSelect = adForm.querySelector('#capacity');
 
+
+var roomsForGuestsMap = {
+  '1': ['1'],
+  '2': ['2', '1'],
+  '3': ['3', '2', '1'],
+  '100': ['0']
+};
+
+
 // функция, которая дизейблит варианты количества гостей, если они не соотвествуют условию
 var onRoomsAdvertSelectChange = function (evt) {
-  var guestsOptions = guestsAdvertSelect.children;
+  var guestsOptions = guestsAdvertSelect.options;
   for (var m = 0; m < guestsOptions.length; m++) {
-    if (evt.target.value === '100' && guestsOptions[m].value !== '0') {
-      guestsOptions[m].disabled = true;
-    } else if (evt.target.value < guestsOptions[m].value && guestsOptions[m].value !== '0') {
-      guestsOptions[m].disabled = true;
-    } else if (evt.target.value !== '100' && guestsOptions[m].value === '0') {
+    if (!roomsForGuestsMap[evt.target.value].includes(guestsAdvertSelect.options[m].value)) {
       guestsOptions[m].disabled = true;
     } else {
       guestsOptions[m].disabled = false;
+      guestsOptions[m].selected = true;
     }
   }
 };
-
-// функция, которая будет дизейблить комнаты в зависимости от выбранного количества комнат (если вдруг пользователь начнет сначала выбирать количество гостей)
-var onGuestsAdvertSelectChange = function (evt) {
-  var roomsOptions = roomsAdvertSelect.children;
-  for (var n = 0; n < roomsOptions.length; n++) {
-    if (+evt.target.value === 0 && +roomsOptions[n].value !== 100) {
-      roomsOptions[n].disabled = true;
-    } else if (evt.target.value < roomsOptions[n].value && +roomsOptions[n].value !== 100) {
-      roomsOptions[n].disabled = true;
-    } else if (+evt.target.value !== 0 && +roomsOptions[n].value === 100) {
-      roomsOptions[n].disabled = true;
-    } else {
-      roomsOptions[n].disabled = false;
-    }
-  }
-};
-
 
 // выношу в переменные поля въезда и выезда в/из жилья
 var checkInSelect = adForm.querySelector('#timein');
@@ -281,7 +270,6 @@ var activateMap = function () {
   typeAdvertSelect.addEventListener('change', onTypeAdvertSelectChange);
   // обработчик событий для полей количества комнат
   roomsAdvertSelect.addEventListener('change', onRoomsAdvertSelectChange);
-  guestsAdvertSelect.addEventListener('change', onGuestsAdvertSelectChange);
   // добавляю обработчики событий на поля въезда-выезда
   checkInSelect.addEventListener('change', onCheckInSelectChange);
   checkOutSelect.addEventListener('change', onCheckOutSelectChange);
@@ -313,7 +301,6 @@ var onSubmitAdForm = function () {
   titleAdvertInput.removeEventListener('input', onTitleAdvertInputInput);
   typeAdvertSelect.removeEventListener('change', onTypeAdvertSelectChange);
   roomsAdvertSelect.removeEventListener('change', onRoomsAdvertSelectChange);
-  guestsAdvertSelect.removeEventListener('change', onGuestsAdvertSelectChange);
   checkInSelect.removeEventListener('change', onCheckInSelectChange);
   checkOutSelect.removeEventListener('change', onCheckOutSelectChange);
 };
