@@ -23,37 +23,6 @@ var MIN_Y_COORDINATE = 130;
 var MIN_TITLE_LENGTH = 30;
 var MAX_TITLE_LENGTH = 100;
 
-// получаю элемент карты из DOM, записываю его в переменную
-var mapBlock = document.querySelector('.map');
-
-// записываю в переменную ширину элемента карты
-var mapBlockWidth = mapBlock.offsetWidth;
-
-// получаю элемент, внутри которого будут располагаться все метки на карте, записываю его в переменную
-var mapPinsList = mapBlock.querySelector('.map__pins');
-
-// получаю шаблон метки, добираюсь до разметки внутри
-var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
-
-// функция для получения случайного элемента из массива
-var getRandomElement = function (elements) {
-  return elements[Math.floor(Math.random() * elements.length)];
-};
-
-// функция для создания массива случайной длины без повторов в элементах
-var getRandomElements = function (elements) {
-  var randomElements = [];
-  var i = 0;
-  while (i <= Math.floor(Math.random() * elements.length)) {
-    var element = elements[Math.floor(Math.random() * elements.length)];
-    if (randomElements.indexOf(element) === -1) {
-      randomElements.push(element);
-      i++;
-    }
-  }
-  return randomElements;
-};
-
 // функция, в которой создается массив, внутри цикла в каждой итерации создается объявление и затем пушится в массив
 var getRandomAdvertsList = function () {
   var adverts = [];
@@ -110,10 +79,6 @@ for (var i = 0; i < adverts.length; i++) {
 }
 
 
-// нахожу форму и все ее элементы
-var adForm = document.querySelector('.ad-form');
-var adFormFieldsets = adForm.children;
-
 // нахожу все дочерние элементы у блока с фильтрами карты
 var mapFilters = mapBlock.querySelector('.map__filters').children;
 
@@ -135,10 +100,6 @@ window.onload = function () {
   }
 };
 
-// выношу в переменные поля заголовка, цены и типа жилья
-var titleAdvertInput = adForm.querySelector('#title');
-var typeAdvertSelect = adForm.querySelector('#type');
-var priceAdvertInput = adForm.querySelector('#price');
 
 // структура данных для выражения типа и минимальной цены жилья
 var priceTypeToRange = {
@@ -181,9 +142,6 @@ var onRoomsAdvertSelectChange = function (evt) {
   }
 };
 
-// выношу в переменные поля въезда и выезда в/из жилья
-var checkInSelect = adForm.querySelector('#timein');
-var checkOutSelect = adForm.querySelector('#timeout');
 
 // функция для поля въезда
 var onCheckInSelectChange = function (evt) {
