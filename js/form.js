@@ -147,8 +147,8 @@
     evt.preventDefault();
     // удаление всех обработчиков событий
     priceAdvertInput.removeEventListener('invalid', onPriceAdvertInputInvalid);
-    titleAdvertInput.removeEventListener('invalid', onTitleAdvertInputInvalid);
     titleAdvertInput.removeEventListener('input', onTitleAdvertInputInput);
+    titleAdvertInput.removeEventListener('invalid', onTitleAdvertInputInvalid);
     typeAdvertSelect.removeEventListener('change', onTypeAdvertSelectChange);
     roomsAdvertSelect.removeEventListener('change', onRoomsAdvertSelectChange);
     checkInSelect.removeEventListener('change', onCheckInSelectChange);
@@ -162,6 +162,19 @@
     adForm: adForm,
     adFormFieldsets: adFormFieldsets,
     enableForms: enableForms,
-    changeAdvertAddressInputValue: changeAdvertAddressInputValue
+    changeAdvertAddressInputValue: changeAdvertAddressInputValue,
+    priceAdvertInput: priceAdvertInput,
+    titleAdvertInput: titleAdvertInput,
+    typeAdvertSelect: typeAdvertSelect,
+    roomsAdvertSelect: roomsAdvertSelect,
+    checkInSelect: checkInSelect,
+    checkOutSelect: checkOutSelect,
+    onPriceAdvertInputInvalid: onPriceAdvertInputInvalid,
+    onTitleAdvertInputInput: onTitleAdvertInputInput,
+    onTitleAdvertInputInvalid: onTitleAdvertInputInvalid,
+    onTypeAdvertSelectChange: onTypeAdvertSelectChange,
+    onRoomsAdvertSelectChange: onRoomsAdvertSelectChange,
+    onCheckInSelectChange: onCheckInSelectChange,
+    onCheckOutSelectChange: onCheckOutSelectChange
   };
 })();
