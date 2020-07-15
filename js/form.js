@@ -160,7 +160,6 @@
 
   window.form = {
     adForm: adForm,
-    adFormFieldsets: adFormFieldsets,
     enableForms: enableForms,
     changeAdvertAddressInputValue: changeAdvertAddressInputValue,
     priceAdvertInput: priceAdvertInput,
