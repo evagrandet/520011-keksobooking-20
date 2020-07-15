@@ -54,10 +54,10 @@
     var guestsOptions = window.dom.guestsAdvertSelect.options;
     for (var m = 0; m < guestsOptions.length; m++) {
       if (!roomsForGuestsMap[evt.target.value].includes(window.dom.guestsAdvertSelect.options[m].value)) {
-       guestsOptions[m].disabled = true;
+        guestsOptions[m].disabled = true;
       } else {
-       guestsOptions[m].disabled = false;
-       guestsOptions[m].selected = true;
+        guestsOptions[m].disabled = false;
+        guestsOptions[m].selected = true;
       }
     }
   };
@@ -80,7 +80,7 @@
 
   // функция обработки события невалидности поля цены
   var onPriceAdvertInputInvalid = function () {
-    if ( window.dom.priceAdvertInput.validity.rangeUnderflow) {
+    if (window.dom.priceAdvertInput.validity.rangeUnderflow) {
       window.dom.priceAdvertInput.setCustomValidity('Выбранная Вами цена меньше минимально допустимой цены в ' + window.dom.priceAdvertInput.min + ' рублей');
     } else {
       window.dom.priceAdvertInput.setCustomValidity('');
