@@ -2,14 +2,6 @@
 
 (function () {
 
-
-  // получаю элемент, внутри которого будут располагаться все метки на карте, записываю его в переменную
-  var mapPinsList = window.map.mapBlock.querySelector('.map__pins');
-
-  // нахожу главный пин, при взаимодействии с которым происходит переход режима карты из неактивного в активный
-  var mainPin = window.map.mapBlock.querySelector('.map__pin--main');
-
-
   // функция, которая будет срабатывать на нажатии левой кнопки мыши, и которая будет активировать карту
   var onMainPinMousedown = function (evt) {
     if (evt.buttons === 1) {
@@ -25,12 +17,6 @@
   };
 
   // добавляю два обработчика событий на главный пин
-  mainPin.addEventListener('mousedown', onMainPinMousedown);
-  mainPin.addEventListener('keydown', onMainPinKeydown);
-
-
-  window.pin = {
-    mainPin: mainPin,
-    mapPinsList: mapPinsList
-  };
+  window.dom.mainPin.addEventListener('mousedown', onMainPinMousedown);
+  window.dom.mainPin.addEventListener('keydown', onMainPinKeydown);
 })();

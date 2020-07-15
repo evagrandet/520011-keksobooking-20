@@ -20,11 +20,8 @@
   var MAX_Y_COORDINATE = 630;
   var MIN_Y_COORDINATE = 130;
 
-  // получаю элемент карты из DOM, записываю его в переменную
-  var mapBlock = document.querySelector('.map');
-
   // записываю в переменную ширину элемента карты
-  var mapBlockWidth = mapBlock.offsetWidth;
+  var mapBlockWidth = window.dom.mapBlock.offsetWidth;
 
   // функция, в которой создается массив, внутри цикла в каждой итерации создается объявление и затем пушится в массив
   var getRandomAdvertsList = function () {
@@ -62,13 +59,9 @@
   // записываю результат выполнения функции в переменную
   var adverts = getRandomAdvertsList();
 
-  // получаю шаблон метки, добираюсь до разметки внутри
-  var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
-
-
   // функция для отображения объявлений в пинах
   var renderAdverts = function (advert) {
-    var pinElement = pinTemplate.cloneNode(true);
+    var pinElement = window.dom.pinTemplate.cloneNode(true);
     var pinImage = pinElement.querySelector('img');
     pinElement.style.left = advert.location.x - PIN_WIDTH / 2 + 'px';
     pinElement.style.top = advert.location.y - PIN_HEIGHT + 'px';
@@ -77,42 +70,39 @@
     return pinElement;
   };
 
-  // создаю 'контейнер' будущей разметки всех пинов-объявлений
-  var fragment = document.createDocumentFragment();
 
   // прохождусь по циклу объявлений, запускаю для каждого функцию по отображения пина, затем каждый из пинов добавляю в 'контейнер'
   for (var i = 0; i < adverts.length; i++) {
-    fragment.appendChild(renderAdverts(adverts[i]));
+    window.dom.fragment.appendChild(renderAdverts(adverts[i]));
   }
 
   // функция, которая срабатывает при взаимодействии с главным пином (удаляются классы у блоков карты и формы, перевожу поля формы и фильтра в активное состояние, меняю значение адреса главной метки [смещаю его с центра на ее 'хвост'], затем выключаю поле адреса)
   var activateMap = function () {
-    mapBlock.classList.remove('map--faded');
-    window.form.adForm.classList.remove('ad-form--disabled');
+    window.dom.mapBlock.classList.remove('map--faded');
+    window.dom.adForm.classList.remove('ad-form--disabled');
     // разом добавляю все пины-объявления в конец элемента, в котором должна быть разметка пинов
-    window.pin.mapPinsList.appendChild(fragment);
+    window.dom.mapPinsList.appendChild(window.dom.fragment);
     // вызываю функции включения форм и определения адреса главного пина
     window.form.enableForms();
     window.form.changeAdvertAddressInputValue();
 
     // обратботчик события, который сработает, если при отправке данных на сервер выяснится, что пользователь ввел цену меньше, чем необходимо при выбранном типе жилья
-    window.form.priceAdvertInput.addEventListener('invalid', window.form.onPriceAdvertInputInvalid);
+    window.dom.priceAdvertInput.addEventListener('invalid', window.form.onPriceAdvertInputInvalid);
     // добавляю для него обработчик события для дополнительной кастомной валидации поля
-    window.form.titleAdvertInput.addEventListener('invalid', window.form.onTitleAdvertInputInvalid);
+    window.dom.titleAdvertInput.addEventListener('invalid', window.form.onTitleAdvertInputInvalid);
     // добавляю еще один обработчик, чтобы повысить информативность
-    window.form.titleAdvertInput.addEventListener('input', window.form.onTitleAdvertInputInput);
+    window.dom.titleAdvertInput.addEventListener('input', window.form.onTitleAdvertInputInput);
     // добавляю обработчик события с функцией выше на селект выбора типа жилья
-    window.form.typeAdvertSelect.addEventListener('change', window.form.onTypeAdvertSelectChange);
+    window.dom.typeAdvertSelect.addEventListener('change', window.form.onTypeAdvertSelectChange);
     // обработчик событий для полей количества комнат
-    window.form.roomsAdvertSelect.addEventListener('change', window.form.onRoomsAdvertSelectChange);
+    window.dom.roomsAdvertSelect.addEventListener('change', window.form.onRoomsAdvertSelectChange);
     // добавляю обработчики событий на поля въезда-выезда
-    window.form.checkInSelect.addEventListener('change', window.form.onCheckInSelectChange);
-    window.form.checkOutSelect.addEventListener('change', window.form.onCheckOutSelectChange);
+    window.dom.checkInSelect.addEventListener('change', window.form.onCheckInSelectChange);
+    window.dom.checkOutSelect.addEventListener('change', window.form.onCheckOutSelectChange);
   };
 
 
   window.map = {
-    mapBlock: mapBlock,
     activateMap: activateMap
   };
 
