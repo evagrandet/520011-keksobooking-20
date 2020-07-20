@@ -30,7 +30,10 @@
   // получаю шаблон метки, добираюсь до разметки внутри
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
-  // создаю 'контейнер' будущей разметки всех пинов-объявлений
+  // получаю шаблон карточки объявляения, добираюсь до разметки внутри
+  var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+
+  // создаю 'контейнер' будущей разметки всех элементов, отрендеренных по шаблону
   var fragment = document.createDocumentFragment();
 
   window.dom = {
@@ -48,6 +51,7 @@
     mainPin: mainPin,
     mapBlock: mapBlock,
     pinTemplate: pinTemplate,
-    fragment: fragment
+    fragment: fragment,
+    cardTemplate: cardTemplate
   };
 })();
