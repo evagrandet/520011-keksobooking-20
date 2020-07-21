@@ -21,8 +21,23 @@
     return randomElements;
   };
 
+  // функция отображения сообщения об ошибке
+  var renderError = function (errorMessage) {
+    var error = document.createElement('div');
+    error.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    error.style.position = 'absolute';
+    error.style.left = '0';
+    error.style.right = '0';
+    error.style.fontSize = '30px';
+
+    error.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', error);
+  };
+
+
   window.utils = {
     getRandomElement: getRandomElement,
-    getRandomElements: getRandomElements
+    getRandomElements: getRandomElements,
+    renderError: renderError
   };
 })();
