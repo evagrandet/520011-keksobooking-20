@@ -26,7 +26,6 @@
   // нахожу главный пин, при взаимодействии с которым происходит переход режима карты из неактивного в активный
   var mainPin = mapBlock.querySelector('.map__pin--main');
 
-
   // получаю шаблон метки, добираюсь до разметки внутри
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
