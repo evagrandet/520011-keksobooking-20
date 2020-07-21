@@ -27,12 +27,6 @@
   var mainPin = mapBlock.querySelector('.map__pin--main');
 
 
-  // получаю шаблон метки, добираюсь до разметки внутри
-  var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
-
-  // создаю 'контейнер' будущей разметки всех пинов-объявлений
-  var fragment = document.createDocumentFragment();
-
   window.dom = {
     adForm: adForm,
     titleAdvertInput: titleAdvertInput,
@@ -47,7 +41,5 @@
     mapPinsList: mapPinsList,
     mainPin: mainPin,
     mapBlock: mapBlock,
-    pinTemplate: pinTemplate,
-    fragment: fragment
   };
 })();
