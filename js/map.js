@@ -31,6 +31,10 @@
     // добавляю обработчики событий на поля въезда-выезда
     window.dom.checkInSelect.addEventListener('change', window.form.onCheckInSelectChange);
     window.dom.checkOutSelect.addEventListener('change', window.form.onCheckOutSelectChange);
+
+    // удаляю обработчики событий взаимодействия с главным пином
+    window.dom.mainPin.removeEventListener('mousedown', window.pin.onMainPinMousedown);
+    window.dom.mainPin.removeEventListener('keydown', window.pin.onMainPinKeydown);
   };
 
 
