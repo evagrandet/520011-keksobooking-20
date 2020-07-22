@@ -20,23 +20,9 @@
   window.dom.mainPin.addEventListener('mousedown', onMainPinMousedown);
   window.dom.mainPin.addEventListener('keydown', onMainPinKeydown);
 
-  window.dom.mapPinElements.addEventListener('click', function (evt) {
-      var container = document.querySelector('.map');
-      var activeElement = evt.currentTarget;
-      var activePin = window.map.container.querySelector('.map__pin--active');
-
-      if (activePin) {
-        activePin.classList.remove('map__pin--active');
-      }
-
-      activeElement.classList.add('map__pin--active');
-      window.card.render(container, window.card.createCard(card));
-    });
-
-    return pin;
 
   window.pin = {
     onMainPinMousedown: onMainPinMousedown,
-    onMainPinKeydown: onMainPinKeydown
+    onMainPinKeydown: onMainPinKeydown,
   };
 })();

@@ -2,6 +2,8 @@
 
 
 (function () {
+  var ESC_KEY = 'Escape';
+
   var typeHousingMap = {
     palace: 'Дворец',
     flat: 'Квартира',
@@ -32,24 +34,54 @@
     });
   };
 
-  var createCard = function () {
+  var closeCard = function () {
+    var card = window.dom.mapBlock.querySelector('.popup');
+    var activePin = window.dom.mapBlock.querySelector('.map__pin--active');
+
+    if (activePin) {
+      activePin.classList.remove('map__pin--active');
+    }
+    if (card) {
+      card.remove();
+    }
+  };
+
+  var onCardCloseBtnClick = function () {
+    closeCard();
+  };
+
+  var onCardKeydown = function (evt) {
+    if (evt.key === ESC_KEY) {
+      closeCard();
+    }
+  };
+
+  var createCard = function (advert) {
     var card = window.dom.cardTemplate.cloneNode(true);
     var imageContainer = card.querySelector('.popup__photos');
     var featureContainer = card.querySelector('.popup__features');
+    var cardCloseBtn = card.querySelector('.popup__close');
 
-    card.querySelector('.popup__avatar').src = card.author.avatar;
-    card.querySelector('.popup__title').textContent = card.offer.title;
-    card.querySelector('.popup__text--address').textContent = card.offer.address;
-    card.querySelector('.popup__text--price').textContent = card.offer.price + '₽/ночь';
-    card.querySelector('.popup__type').textContent = typeHousingMap[card.offer.type];
-    card.querySelector('.popup__text--capacity').textContent = card.offer.rooms + ' комнаты для ' + card.offer.guests + ' гостей';
-    card.querySelector('.popup__text--time').textContent = 'Заезд после ' + card.offer.checkin + ', выезд до ' + card.offer.checkout;
-    card.querySelector('.popup__description').textContent = card.offer.description;
+    card.querySelector('.popup__avatar').src = advert.author.avatar;
+    card.querySelector('.popup__title').textContent = advert.offer.title;
+    card.querySelector('.popup__text--address').textContent = advert.offer.address;
+    card.querySelector('.popup__text--price').textContent = advert.offer.price + '₽/ночь';
+    card.querySelector('.popup__type').textContent = typeHousingMap[advert.offer.type];
+    card.querySelector('.popup__text--capacity').textContent = advert.offer.rooms + ' комнаты для ' + advert.offer.guests + ' гостей';
+    card.querySelector('.popup__text--time').textContent = 'Заезд после ' + advert.offer.checkin + ', выезд до ' + advert.offer.checkout;
+    card.querySelector('.popup__description').textContent = advert.offer.description;
 
-    renderImage(imageContainer, card.offer.photos);
-    renderFeature(featureContainer, card.offer.features);
+    renderImage(imageContainer, advert.offer.photos);
+    renderFeature(featureContainer, advert.offer.features);
+
+    cardCloseBtn.addEventListener('click', onCardCloseBtnClick);
+    card.addEventListener('keydown', onCardKeydown);
+    return card;
   };
+
+
   window.card = {
-    createCard: createCard
+    createCard: createCard,
+    closeCard: closeCard
   };
 })();

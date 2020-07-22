@@ -35,6 +35,7 @@
   // создаю 'контейнер' будущей разметки всех элементов, отрендеренных по шаблону
   var fragment = document.createDocumentFragment();
 
+
   window.dom = {
     adForm: adForm,
     titleAdvertInput: titleAdvertInput,
