@@ -47,6 +47,7 @@
     if (card) {
       card.remove();
     }
+    window.dom.mapBlock.removeEventListener('keydown', onCardKeydown);
   };
 
   // функция, которая вызовется при клике по кнопке закрытия карточки
@@ -81,7 +82,7 @@
     renderFeature(featureContainer, advert.offer.features);
 
     cardCloseBtn.addEventListener('click', onCardCloseBtnClick);
-    card.addEventListener('keydown', onCardKeydown);
+    window.dom.mapBlock.addEventListener('keydown', onCardKeydown);
     return card;
   };
 
