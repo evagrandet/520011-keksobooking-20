@@ -11,6 +11,7 @@
     bungalo: 'Бунгало'
   };
 
+  // функция рендера изображения жилья в карточке
   var renderImage = function (container, photos) {
     container.innerHTML = '';
     photos.forEach(function (photo) {
@@ -25,6 +26,7 @@
     });
   };
 
+  // функция рендера списка особеностей жилья в карточке
   var renderFeature = function (container, features) {
     container.innerHTML = '';
     features.forEach(function (feature) {
@@ -34,6 +36,7 @@
     });
   };
 
+  // функция закрытия карточки (она же снимает класс активного пина)
   var closeCard = function () {
     var card = window.dom.mapBlock.querySelector('.popup');
     var activePin = window.dom.mapBlock.querySelector('.map__pin--active');
@@ -46,16 +49,19 @@
     }
   };
 
+  // функция, которая вызовется при клике по кнопке закрытия карточки
   var onCardCloseBtnClick = function () {
     closeCard();
   };
 
+  // функция, которая вызовется при нажатии клавиши Escape, если карточка открыта
   var onCardKeydown = function (evt) {
     if (evt.key === ESC_KEY) {
       closeCard();
     }
   };
 
+  // функция создания карточки - заполнение всех полей, рендер контейнеров для изображений и списка, добавление слушателей событий
   var createCard = function (advert) {
     var card = window.dom.cardTemplate.cloneNode(true);
     var imageContainer = card.querySelector('.popup__photos');
