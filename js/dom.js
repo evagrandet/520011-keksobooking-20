@@ -17,7 +17,8 @@
   // получаю элемент карты из DOM, записываю его в переменную
   var mapBlock = document.querySelector('.map');
 
-  var mapFilters = mapBlock.querySelector('.map__filters').children;
+  var mapFilterBlock = mapBlock.querySelector('.map__filters-container');
+  var mapFilters = mapFilterBlock.querySelector('.map__filters').children;
 
 
   // получаю элемент, внутри которого будут располагаться все метки на карте, записываю его в переменную
@@ -25,6 +26,15 @@
 
   // нахожу главный пин, при взаимодействии с которым происходит переход режима карты из неактивного в активный
   var mainPin = mapBlock.querySelector('.map__pin--main');
+
+  // получаю шаблон метки, добираюсь до разметки внутри
+  var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+
+  // получаю шаблон карточки объявляения, добираюсь до разметки внутри
+  var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+
+  // создаю 'контейнер' будущей разметки всех элементов, отрендеренных по шаблону
+  var fragment = document.createDocumentFragment();
 
 
   window.dom = {
@@ -41,5 +51,9 @@
     mapPinsList: mapPinsList,
     mainPin: mainPin,
     mapBlock: mapBlock,
+    pinTemplate: pinTemplate,
+    fragment: fragment,
+    cardTemplate: cardTemplate,
+    mapFilterBlock: mapFilterBlock
   };
 })();
