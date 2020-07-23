@@ -4,8 +4,10 @@
   var ENTER_KEY = 'Enter';
   // функция, которая будет срабатывать на нажатии левой кнопки мыши, и которая будет активировать карту
   var onMainPinMousedown = function (evt) {
-    if (evt.buttons === 1) {
+    if (evt.buttons === 1 && !window.map.isMapActivated) {
       window.map.activateMap();
+    } else if (evt.buttons === 1 && window.map.isMapActivated) {
+      window.dnd.startDrag(evt);
     }
   };
 

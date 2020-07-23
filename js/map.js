@@ -1,7 +1,13 @@
 'use strict';
 
 (function () {
+  var MAP_TOP_Y = 130;
+  var MAP_BOTTOM_Y = 630;
+  var MAP_LEFT_X = 0;
+  var MAP_RIGHT_X = 1200;
+
   var adverts = [];
+
   // функция, которая отработает в случае успешной загрузки данных
   var onSuccessLoad = function (data) {
     adverts = data;
@@ -10,6 +16,7 @@
 
   // функция, которая срабатывает при взаимодействии с главным пином (удаляются классы у блоков карты и формы, перевожу поля формы и фильтра в активное состояние, меняю значение адреса главной метки [смещаю его с центра на ее 'хвост'], затем выключаю поле адреса)
   var activateMap = function () {
+    window.map.isMapActivated = true;
     window.backend.requestToServer('GET', onSuccessLoad, window.utils.renderError); // обращение к бэку за данными
     window.dom.mapBlock.classList.remove('map--faded');
     window.dom.adForm.classList.remove('ad-form--disabled');
@@ -33,13 +40,17 @@
     window.dom.checkOutSelect.addEventListener('change', window.form.onCheckOutSelectChange);
 
     // удаляю обработчики событий взаимодействия с главным пином
-    window.dom.mainPin.removeEventListener('mousedown', window.pin.onMainPinMousedown);
     window.dom.mainPin.removeEventListener('keydown', window.pin.onMainPinKeydown);
+
   };
 
 
   window.map = {
-    activateMap: activateMap
+    activateMap: activateMap,
+    MAP_TOP_Y: MAP_TOP_Y,
+    MAP_BOTTOM_Y: MAP_BOTTOM_Y,
+    MAP_LEFT_X: MAP_LEFT_X,
+    MAP_RIGHT_X: MAP_RIGHT_X
   };
 
 })();

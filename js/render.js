@@ -33,4 +33,8 @@
 
     window.dom.mapPinsList.appendChild(fragment);
   };
+  window.pin = {
+    PIN_WIDTH: PIN_WIDTH,
+    PIN_HEIGHT: PIN_HEIGHT
+  }
 })();
