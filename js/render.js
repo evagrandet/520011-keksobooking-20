@@ -51,7 +51,7 @@
 
 
   var renderCard = function (data) {
-    window.dom.mapBlock.appendChild(window.card.createCard(data));
+    window.dom.mapBlock.insertBefore(window.card.createCard(data), window.dom.mapFilterBlock);
   };
 
 

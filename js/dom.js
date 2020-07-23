@@ -17,7 +17,8 @@
   // получаю элемент карты из DOM, записываю его в переменную
   var mapBlock = document.querySelector('.map');
 
-  var mapFilters = mapBlock.querySelector('.map__filters').children;
+  var mapFilterBlock = mapBlock.querySelector('.map__filters-container');
+  var mapFilters = mapFilterBlock.querySelector('.map__filters').children;
 
 
   // получаю элемент, внутри которого будут располагаться все метки на карте, записываю его в переменную
@@ -52,6 +53,7 @@
     mapBlock: mapBlock,
     pinTemplate: pinTemplate,
     fragment: fragment,
-    cardTemplate: cardTemplate
+    cardTemplate: cardTemplate,
+    mapFilterBlock: mapFilterBlock
   };
 })();
