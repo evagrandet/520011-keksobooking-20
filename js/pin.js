@@ -22,8 +22,9 @@
   window.dom.mainPin.addEventListener('mousedown', onMainPinMousedown);
   window.dom.mainPin.addEventListener('keydown', onMainPinKeydown);
 
+
   window.pin = {
     onMainPinMousedown: onMainPinMousedown,
-    onMainPinKeydown: onMainPinKeydown
+    onMainPinKeydown: onMainPinKeydown,
   };
 })();
