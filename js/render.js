@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var ADVERT_COUNT = 8;
+  var ADVERT_COUNT = 5;
 
   var PIN_WIDTH = 50;
   var PIN_HEIGHT = 70;
@@ -51,7 +51,7 @@
 
 
   var renderCard = function (data) {
-    window.dom.mapBlock.insertBefore(window.card.createCard(data), window.dom.mapFilterBlock);
+    window.dom.mapBlock.insertBefore(window.card.createCard(data), window.dom.mapFilterContainer);
   };
 
 
