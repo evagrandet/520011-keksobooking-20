@@ -3,15 +3,16 @@
 (function () {
 
 
-  var startDrag = function (evt) {
+  var dragAndDropMainPin = function (evt) {
     evt.preventDefault();
 
+    // определяю пределы сдвига пина
     var limits = {
-      top: window.map.MAP_TOP_Y + window.pin.PIN_HEIGHT,
-      bottom: window.map.MAP_BOTTOM_Y - window.pin.PIN_HEIGHT,
-      right: 0,
-      left: 0
-    }
+      top: window.map.MAP_TOP_Y - (window.pin.MAIN_PIN_HEIGHT + window.pin.MAIN_PIN_TAIL),
+      bottom: window.map.MAP_BOTTOM_Y - (window.pin.MAIN_PIN_HEIGHT + window.pin.MAIN_PIN_TAIL),
+      right: window.map.MAP_RIGHT_X - Math.floor(window.pin.PIN_WIDTH / 2),
+      left: window.map.MAP_LEFT_X - Math.floor(window.pin.PIN_WIDTH / 2),
+    };
 
     // стартовые координаты, с которых началось перетаскивание
     var startCoords = {
@@ -19,15 +20,15 @@
       y: evt.clientY
     };
 
-    // переменная-флаг для понимания того, собирается пользователь поменять аватар или двигать попап
+    // переменная-флаг для понимания того, собирается ли пользователь передвигать пин
     window.dnd.isDragged = false;
 
     // функция, которая будет отрабатывать при движении мыши
-    var onMouseMove = function (moveEvt) {
+    var onMapBlockMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
 
-      // подтверждение, что пользователь собирается двигать попап
-      isDragged = true;
+      // подтверждение, что пользователь собирается двигать пин
+      window.dnd.isDragged = true;
 
       // координаты смещения
       var shift = {
@@ -40,19 +41,40 @@
         y: moveEvt.clientY
       };
 
-      // задаем попапу координаты (вычитаем из расстояния между попапом и его родителем[body] координаты смещения)
-      window.dom.mainPin.style.top = (window.dom.mainPin.offsetTop - shift.y) + 'px';
-      window.dom.mainPin.style.left = (window.dom.mainPin.offsetLeft - shift.x) + 'px';
+      // высчитываем конечные координаты
+      var endCoords = {
+        x: window.dom.mainPin.offsetLeft - shift.x,
+        y: window.dom.mainPin.offsetTop - shift.y
+      };
+
+      // сравниваем конечные координаты с пределами передвижения, если они выходят за рамки, то уравниваем их с пределами
+      if (endCoords.x > limits.right) {
+        endCoords.x = limits.right;
+      } else if (endCoords.x < limits.left) {
+        endCoords.x = limits.left;
+      }
+
+      if (endCoords.y < limits.top) {
+        endCoords.y = limits.top;
+      } else if (endCoords.y > limits.bottom) {
+        endCoords.y = limits.bottom;
+      }
+
+      // задаем пину координаты
+      window.dom.mainPin.style.top = endCoords.y + 'px';
+      window.dom.mainPin.style.left = endCoords.x + 'px';
+      // передаем координаты в поле адреса
+      window.form.changeAdvertAddressInputValue(endCoords.x, endCoords.y);
     };
     // функция, которая будет срабатывать при отпускании клавиши мыши
-    var onMouseUp = function (upEvt) {
+    var onDocumentMouseUp = function (upEvt) {
       upEvt.preventDefault();
       // удаляем все обработчики
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
+      window.dom.mapBlock.removeEventListener('mousemove', onMapBlockMouseMove);
+      document.removeEventListener('mouseup', onDocumentMouseUp);
 
-      // если пользователь двигает попап, то нужно отменить действие на клик мыши по умолчанию
-      if (isDragged) {
+      // если пользователь двигает пин, то нужно отменить действие на клик мыши по умолчанию
+      if (window.dnd.isDragged) {
         var onClickPreventDefault = function (clickEvt) {
           clickEvt.preventDefault();
           window.dom.mainPin.removeEventListener('click', onClickPreventDefault);
@@ -61,10 +83,10 @@
       }
     };
     // добавляем обработчики событий на опускание кнопки мыши и передвижение мыши
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
+    window.dom.mapBlock.addEventListener('mousemove', onMapBlockMouseMove);
+    document.addEventListener('mouseup', onDocumentMouseUp);
   };
   window.dnd = {
-    startDrag: startDrag
+    dragAndDropMainPin: dragAndDropMainPin
   };
 })();

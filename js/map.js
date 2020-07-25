@@ -22,7 +22,7 @@
     window.dom.adForm.classList.remove('ad-form--disabled');
     // вызываю функции включения форм и определения адреса главного пина
     window.form.enableForms();
-    window.form.changeAdvertAddressInputValue();
+    window.form.changeAdvertAddressInputValue(window.dom.mainPin.offsetLeft, window.dom.mainPin.offsetTop);
 
     // обратботчик события, который сработает, если при отправке данных на сервер выяснится, что пользователь ввел цену меньше, чем необходимо при выбранном типе жилья
     window.dom.priceAdvertInput.addEventListener('invalid', window.form.onPriceAdvertInputInvalid);
