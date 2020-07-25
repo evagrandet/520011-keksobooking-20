@@ -4,6 +4,7 @@
 
   var ANY_TYPE = 'any';
 
+  // фильтрую объявления на соответствие фильтрам
   var onMapFilterBlockChange = function (evt) {
     var filteredAdverts = window.map.adverts.filter(function (advert) {
       if (evt.target.value === ANY_TYPE) {
