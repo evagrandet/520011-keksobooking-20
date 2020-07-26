@@ -1,6 +1,9 @@
 'use strict';
 
 (function () {
+
+  var mainBlock = document.querySelector('main');
+
   // нахожу форму и все ее элементы
   var adForm = document.querySelector('.ad-form');
 
@@ -43,6 +46,7 @@
 
 
   window.dom = {
+    mainBlock: mainBlock,
     adForm: adForm,
     titleAdvertInput: titleAdvertInput,
     typeAdvertSelect: typeAdvertSelect,

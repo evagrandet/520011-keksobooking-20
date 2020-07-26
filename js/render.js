@@ -55,9 +55,14 @@
   };
 
   var renderMessage = function (type) {
-    switch ('type') {
+    document.addEventListener('keydown', window.utils.onMainBlockKeydown)
+    switch (type) {
       case 'success':
-        document.appendChild(window.dom.successMessage)
+
+        break;
+      case 'error':
+        window.dom.mainBlock.appendChild(window.dom.errorMessage);
+        break;
     }
   }
 
@@ -65,6 +70,5 @@
   window.render = {
     renderAdverts: renderAdverts,
     renderCard: renderCard,
-    renderMessage: renderMessage
   };
 })();

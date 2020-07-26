@@ -138,11 +138,16 @@
     window.dom.advertAddressInput.readonly = true;
   };
 
+  var onSuccessRequest = function () {
+    window.map.deactivateMap();
+    window.dom.mainBlock.appendChild(window.dom.successMessage);
+    window.dom.mainBlock.addEventListener()
+  }
 
   var onSubmitAdForm = function (evt) {
     evt.preventDefault();
     window.backend.requestToServer('POST',
-      window.map.deactivateMap(),
+      onSuccessRequest,
       window.utils.renderError,
       new FormData(adForm)
     );

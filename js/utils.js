@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var ESC_KEY = 'Escape';
 
   // функция для получения случайного элемента из массива
   var getRandomElement = function (elements) {
@@ -20,24 +21,20 @@
     }
     return randomElements;
   };
-
-  // функция отображения сообщения об ошибке
-  var renderError = function (errorMessage) {
-    var error = document.createElement('div');
-    error.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
-    error.style.position = 'absolute';
-    error.style.left = '0';
-    error.style.right = '0';
-    error.style.fontSize = '30px';
-
-    error.textContent = errorMessage;
-    document.body.insertAdjacentElement('afterbegin', error);
-  };
-
+  var onMainBlockKeydown = function(evt) {
+    if (evt.key === ESC_KEY) {
+      closeMessage(evt);
+    }
+  }
+  var closeMessage = function (evt) {
+    console.log(evt)
+  }
 
   window.utils = {
+    ESC_KEY: ESC_KEY,
     getRandomElement: getRandomElement,
     getRandomElements: getRandomElements,
-    renderError: renderError
+    onMainBlockKeydown: onMainBlockKeydown,
+    closeMessage: closeMessage
   };
 })();

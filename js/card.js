@@ -2,8 +2,6 @@
 
 
 (function () {
-  var ESC_KEY = 'Escape';
-
   var typeHousingMap = {
     palace: 'Дворец',
     flat: 'Квартира',
@@ -57,7 +55,7 @@
 
   // функция, которая вызовется при нажатии клавиши Escape, если карточка открыта
   var onCardKeydown = function (evt) {
-    if (evt.key === ESC_KEY) {
+    if (evt.key === window.utils.ESC_KEY) {
       closeCard();
     }
   };
