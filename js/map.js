@@ -36,9 +36,25 @@
     window.dom.mainPin.removeEventListener('keydown', window.pin.onMainPinKeydown);
   };
 
+  var deactivateMap = function () {
+    window.dom.mapBlock.classList.add('map--faded');
+    window.dom.adForm.classList.add('ad-form--disabled');
+    window.render.renderMessage('success');
+    // удаление всех обработчиков событий
+    window.dom.priceAdvertInput.removeEventListener('invalid', window.form.onPriceAdvertInputInvalid);
+    window.dom.titleAdvertInput.removeEventListener('input', window.form.onTitleAdvertInputInput);
+    window.dom.titleAdvertInput.removeEventListener('invalid', window.form.onTitleAdvertInputInvalid);
+    window.dom.typeAdvertSelect.removeEventListener('change', window.form.onTypeAdvertSelectChange);
+    window.dom.roomsAdvertSelect.removeEventListener('change', window.form.onRoomsAdvertSelectChange);
+    window.dom.checkInSelect.removeEventListener('change', window.form.onCheckInSelectChange);
+    window.dom.checkOutSelect.removeEventListener('change', window.form.onCheckOutSelectChange);
+
+  }
+
 
   window.map = {
-    activateMap: activateMap
+    activateMap: activateMap,
+    deactivateMap: deactivateMap
   };
 
 })();

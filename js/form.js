@@ -8,6 +8,7 @@
   var MAIN_PIN_HEIGHT = 65;
   var MAIN_PIN_TAIL = 22;
 
+  var adForm = document.querySelector('.ad-form');
   // нахожу все дочерние элементы у блока с фильтрами карты
   var adFormFieldsets = window.dom.adForm.children;
 
@@ -122,23 +123,31 @@
     }
   };
 
+   var disableForms = function () {
+    for (var j = 0; j < adFormFieldsets.length; j++) {
+      adFormFieldsets[j].disabled = true;
+    }
+    for (var k = 0; k < window.dom.mapFilters.length; k++) {
+      window.dom.mapFilters[k].disabled = true;
+    }
+  };
+
   // функция высчитывает координаты пина главного, подставляет их в input и отключает его
   var changeAdvertAddressInputValue = function () {
     window.dom.advertAddressInput.value = Math.round(window.dom.mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(window.dom.mainPin.offsetTop + MAIN_PIN_HEIGHT + MAIN_PIN_TAIL);
-    window.dom.advertAddressInput.disabled = true;
+    window.dom.advertAddressInput.readonly = true;
   };
 
 
   var onSubmitAdForm = function (evt) {
     evt.preventDefault();
-    // удаление всех обработчиков событий
-    window.dom.priceAdvertInput.removeEventListener('invalid', onPriceAdvertInputInvalid);
-    window.dom.titleAdvertInput.removeEventListener('input', onTitleAdvertInputInput);
-    window.dom.titleAdvertInput.removeEventListener('invalid', onTitleAdvertInputInvalid);
-    window.dom.typeAdvertSelect.removeEventListener('change', onTypeAdvertSelectChange);
-    window.dom.roomsAdvertSelect.removeEventListener('change', onRoomsAdvertSelectChange);
-    window.dom.checkInSelect.removeEventListener('change', onCheckInSelectChange);
-    window.dom.checkOutSelect.removeEventListener('change', onCheckOutSelectChange);
+    window.backend.requestToServer('POST',
+      window.map.deactivateMap(),
+      window.utils.renderError,
+      new FormData(adForm)
+    );
+    window.dom.adForm.reset();
+    disableForms();
   };
 
   window.dom.adForm.addEventListener('submit', onSubmitAdForm);

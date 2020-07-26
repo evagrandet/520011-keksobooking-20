@@ -33,6 +33,11 @@
   // получаю шаблон карточки объявляения, добираюсь до разметки внутри
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
+  // шаблоны сообщений ошибки и успеха
+  var successMessage = document.querySelector('#success').content.querySelector('.success');
+  var errorMessage = document.querySelector('#error').content.querySelector('.error')
+
+
   // создаю 'контейнер' будущей разметки всех элементов, отрендеренных по шаблону
   var fragment = document.createDocumentFragment();
 
@@ -54,6 +59,8 @@
     pinTemplate: pinTemplate,
     fragment: fragment,
     cardTemplate: cardTemplate,
-    mapFilterBlock: mapFilterBlock
+    mapFilterBlock: mapFilterBlock,
+    successMessage: successMessage,
+    errorMessage: errorMessage
   };
 })();

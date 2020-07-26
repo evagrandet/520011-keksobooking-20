@@ -54,9 +54,17 @@
     window.dom.mapBlock.insertBefore(window.card.createCard(data), window.dom.mapFilterBlock);
   };
 
+  var renderMessage = function (type) {
+    switch ('type') {
+      case 'success':
+        document.appendChild(window.dom.successMessage)
+    }
+  }
+
 
   window.render = {
     renderAdverts: renderAdverts,
-    renderCard: renderCard
+    renderCard: renderCard,
+    renderMessage: renderMessage
   };
 })();
