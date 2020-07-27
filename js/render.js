@@ -3,9 +3,6 @@
 (function () {
   var ADVERT_COUNT = 5;
 
-  var PIN_WIDTH = 50;
-  var PIN_HEIGHT = 70;
-
   // получаю шаблон метки, добираюсь до разметки внутри
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
@@ -28,8 +25,8 @@
   var createAdverts = function (advert) {
     var pinElement = pinTemplate.cloneNode(true);
     var pinImage = pinElement.querySelector('img');
-    pinElement.style.left = advert.location.x - PIN_WIDTH / 2 + 'px';
-    pinElement.style.top = advert.location.y - PIN_HEIGHT + 'px';
+    pinElement.style.left = advert.location.x - window.pin.PinSize.width / 2 + 'px';
+    pinElement.style.top = advert.location.y - window.pin.PinSize.height + 'px';
     pinImage.src = advert.author.avatar;
     pinImage.setAttribute('alt', advert.offer.title);
     pinElement.addEventListener('click', onPinElementClick.bind(null, advert));
@@ -59,4 +56,5 @@
     renderAdverts: renderAdverts,
     renderCard: renderCard
   };
+
 })();
