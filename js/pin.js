@@ -4,14 +4,14 @@
   var ENTER_KEY = 'Enter';
 
   var MainPinSize = {
-    width: 62,
-    height: 62,
-    tail: 25
+    WIDTH: 62,
+    HEIGHT: 62,
+    TAIL: 25
   };
 
   var PinSize = {
-    width: 50,
-    height: 70
+    WIDTH: 50,
+    HEIGHT: 70
   };
 
   var clearPins = function () {

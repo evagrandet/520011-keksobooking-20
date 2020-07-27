@@ -2,10 +2,10 @@
 
 (function () {
   var MapCoord = {
-    topY: 130,
-    bottomY: 630,
-    leftX: 0,
-    rightX: 1200
+    TOP_Y: 130,
+    BOTTOM_Y: 630,
+    LEFT_X: 0,
+    RIGHT_X: 1200
   };
 
   var updateAdverts = function (data) {
