@@ -22,17 +22,19 @@
     return randomElements;
   };
 
+
+  // функции, которые сработают при нажатии клавиши Escape и клике при открытом попапе удачи/неуспеха (и которые вызовут другую функцию)
   var onDocumentKeydown = function (type, evt) {
     if (evt.key === ESC_KEY) {
       closeMessage(type);
     }
-
   };
 
   var onDocumentClick = function (type) {
     closeMessage(type);
   };
 
+  // функция, которая удалит попап успеха/неудачи а так же удалит обработчики событий на них
   var closeMessage = function (type) {
     var message = window.dom.mainBlock.querySelector('.' + type);
     if (message) {

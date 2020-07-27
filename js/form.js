@@ -134,17 +134,19 @@
     window.dom.advertAddressInput.value = Math.round(left + window.pin.MainPinSize.WIDTH / 2) + ', ' + Math.round(top + window.pin.MainPinSize.HEIGHT + window.pin.MainPinSize.TAIL);
   };
 
+
+  // функция, которая сработает в случае удачной отправки формы (деактивирует карту и отображает попап успеха)
   var onSuccessRequest = function () {
     window.map.deactivateMap();
     window.render.renderMessage('success');
   };
 
+  // функция, которая сработает в случае неудачной отправки формы (отображает попап неуспеха)
   var onErrorRequest = function () {
-    window.map.deactivateMap();
     window.render.renderMessage('error');
   };
 
-
+  // функция, которая будет срабатывать при отправке формы
   var onSubmitAdForm = function (evt) {
     evt.preventDefault();
     window.backend.requestToServer('POST',
@@ -153,20 +155,17 @@
         new FormData(adForm)
     );
     window.dom.adForm.reset();
+    window.map.deactivateMap();
     disableForms();
   };
 
   window.dom.adForm.addEventListener('submit', onSubmitAdForm);
 
+  // функция, которая сработает при нажатии на кнопку очистки формы
   var onResetFormClick = function (evt) {
     evt.preventDefault();
-    window.dom.mapFilterBlock.reset();
-    window.dom.adForm.reset();
-    window.card.closeCard();
-    window.pin.clearPins();
+    window.map.resetPage();
     changeAdvertAddressInputValue(window.pin.MainPinStartCoord.LEFT, window.pin.MainPinStartCoord.TOP);
-    window.dom.mainPin.style.left = window.pin.MainPinStartCoord.LEFT + 'px';
-    window.dom.mainPin.style.top = window.pin.MainPinStartCoord.TOP + 'px';
   };
 
   window.form = {
