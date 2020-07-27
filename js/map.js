@@ -63,7 +63,7 @@
     window.dom.mainPin.style.left = window.pin.MainPinStartCoord.LEFT + 'px';
     window.dom.mainPin.style.top = window.pin.MainPinStartCoord.TOP + 'px';
 
-  }
+  };
 
   // функция деактивации страницы, внутри которой
   var deactivateMap = function () {
