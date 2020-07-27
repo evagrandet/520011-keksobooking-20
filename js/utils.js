@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var DEBOUNCE_INTERVAL = 1000;
 
   // функция для получения случайного элемента из массива
   var getRandomElement = function (elements) {
@@ -34,10 +35,26 @@
     document.body.insertAdjacentElement('afterbegin', error);
   };
 
+  var debounce = function (cb) {
+    var lastTimeout = null;
+
+    return function () {
+      var parameters = arguments;
+
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+
+      lastTimeout = window.setTimeout(function () {
+        cb.apply(null, parameters);
+      }, DEBOUNCE_INTERVAL);
+    };
+  };
 
   window.utils = {
     getRandomElement: getRandomElement,
     getRandomElements: getRandomElements,
-    renderError: renderError
+    renderError: renderError,
+    debounce: debounce
   };
 })();

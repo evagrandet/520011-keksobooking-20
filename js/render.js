@@ -25,8 +25,8 @@
   var createAdverts = function (advert) {
     var pinElement = pinTemplate.cloneNode(true);
     var pinImage = pinElement.querySelector('img');
-    pinElement.style.left = advert.location.x - window.pin.PinSize.width / 2 + 'px';
-    pinElement.style.top = advert.location.y - window.pin.PinSize.height + 'px';
+    pinElement.style.left = advert.location.x - window.pin.PinSize.WIDTH / 2 + 'px';
+    pinElement.style.top = advert.location.y - window.pin.PinSize.HEIGHT + 'px';
     pinImage.src = advert.author.avatar;
     pinImage.setAttribute('alt', advert.offer.title);
     pinElement.addEventListener('click', onPinElementClick.bind(null, advert));

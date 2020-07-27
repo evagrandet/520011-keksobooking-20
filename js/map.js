@@ -45,7 +45,7 @@
     window.dom.checkInSelect.addEventListener('change', window.form.onCheckInSelectChange);
     window.dom.checkOutSelect.addEventListener('change', window.form.onCheckOutSelectChange);
 
-    window.dom.mapFilterBlock.addEventListener('change', window.filter.onMapFilterBlockChange);
+    window.dom.mapFilterBlock.addEventListener('change', window.utils.debounce(window.filter.onMapFilterBlockChange));
 
     // удаляю обработчики событий взаимодействия с главным пином
     window.dom.mainPin.removeEventListener('keydown', window.pin.onMainPinKeydown);
