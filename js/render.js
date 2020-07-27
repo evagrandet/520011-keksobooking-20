@@ -52,8 +52,8 @@
     // добавляю обработчик события клика
     // добавляю обработчик события кейдаун
     // внутри функции-обработчика общая функция, которая закрывает попап и удаляет обработчики
-    document.addEventListener('keydown', window.utils.onDocumentKeydown.bind(null, type))
-    document.addEventListener('click', window.utils.onDocumentClick.bind(null, type))
+    document.addEventListener('keydown', window.utils.onDocumentKeydown.bind(null, type));
+    document.addEventListener('click', window.utils.onDocumentClick.bind(null, type));
     switch (type) {
       case 'success':
         window.dom.mainBlock.appendChild(window.dom.successMessage);
@@ -62,7 +62,7 @@
         window.dom.mainBlock.appendChild(window.dom.errorMessage);
         break;
     }
-  }
+  };
 
 
   window.render = {

@@ -6,7 +6,7 @@
   var MainPinStartCoord = {
     LEFT: 570,
     TOP: 375
-  }
+  };
 
   var MainPinSize = {
     WIDTH: 62,

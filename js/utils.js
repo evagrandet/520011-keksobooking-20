@@ -30,16 +30,16 @@
   };
 
   var onDocumentClick = function (type) {
-      closeMessage(type);
-  }
+    closeMessage(type);
+  };
 
   var closeMessage = function (type) {
     var message = window.dom.mainBlock.querySelector('.' + type);
     if (message) {
       message.remove();
     }
-    document.removeEventListener('keydown', onDocumentKeydown)
-    document.removeEventListener('click', onDocumentClick)
+    document.removeEventListener('keydown', onDocumentKeydown);
+    document.removeEventListener('click', onDocumentClick);
   };
 
   window.utils = {

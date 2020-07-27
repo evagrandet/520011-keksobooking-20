@@ -16,7 +16,7 @@
   var roomsAdvertSelect = adForm.querySelector('#room_number');
   var guestsAdvertSelect = adForm.querySelector('#capacity');
   var advertAddressInput = adForm.querySelector('#address');
-  var resetForm = adForm.querySelector('.ad-form__reset')
+  var resetForm = adForm.querySelector('.ad-form__reset');
 
   // получаю элемент карты из DOM, записываю его в переменную
   var mapBlock = document.querySelector('.map');
@@ -45,7 +45,7 @@
 
   // шаблоны сообщений ошибки и успеха
   var successMessage = document.querySelector('#success').content.querySelector('.success');
-  var errorMessage = document.querySelector('#error').content.querySelector('.error')
+  var errorMessage = document.querySelector('#error').content.querySelector('.error');
 
 
   // создаю 'контейнер' будущей разметки всех элементов, отрендеренных по шаблону
@@ -75,7 +75,6 @@
     successMessage: successMessage,
     errorMessage: errorMessage,
     mapFilterContainer: mapFilterContainer,
-    mapFilterBlock: mapFilterBlock,
     housingTypeFilter: housingTypeFilter,
     housingPriceFilter: housingPriceFilter,
     housingRoomsFilter: housingRoomsFilter,

@@ -164,10 +164,10 @@
     window.dom.adForm.reset();
     window.card.closeCard();
     window.pin.clearPins();
-    changeAdvertAddressInputValue(window.pin.MainPinStartCoord.LEFT, window.pin.MainPinStartCoord.TOP)
+    changeAdvertAddressInputValue(window.pin.MainPinStartCoord.LEFT, window.pin.MainPinStartCoord.TOP);
     window.dom.mainPin.style.left = window.pin.MainPinStartCoord.LEFT + 'px';
     window.dom.mainPin.style.top = window.pin.MainPinStartCoord.TOP + 'px';
-  }
+  };
 
   window.form = {
     enableForms: enableForms,
