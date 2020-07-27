@@ -4,9 +4,6 @@
   // константы
   var MIN_TITLE_LENGTH = 30;
   var MAX_TITLE_LENGTH = 100;
-  var MAIN_PIN_WIDTH = 65;
-  var MAIN_PIN_HEIGHT = 65;
-  var MAIN_PIN_TAIL = 22;
 
   var adForm = document.querySelector('.ad-form');
   // нахожу все дочерние элементы у блока с фильтрами карты
@@ -14,7 +11,7 @@
 
 
   // нахожу поле адреса и сразу туда вписываю значение центра главного пина
-  window.dom.advertAddressInput.value = Math.round(window.dom.mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(window.dom.mainPin.offsetTop + MAIN_PIN_HEIGHT / 2);
+  window.dom.advertAddressInput.value = Math.round(window.dom.mainPin.offsetLeft + window.pin.MainPinSize.WIDTH / 2) + ', ' + Math.round(window.dom.mainPin.offsetTop + window.pin.MainPinSize.HEIGHT / 2);
 
 
   // структура данных для выражения типа и минимальной цены жилья
@@ -133,9 +130,9 @@
   };
 
   // функция высчитывает координаты пина главного, подставляет их в input и отключает его
-  var changeAdvertAddressInputValue = function () {
-    window.dom.advertAddressInput.value = Math.round(window.dom.mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(window.dom.mainPin.offsetTop + MAIN_PIN_HEIGHT + MAIN_PIN_TAIL);
-    window.dom.advertAddressInput.readonly = true;
+  var changeAdvertAddressInputValue = function (left, top) {
+    window.dom.advertAddressInput.value = Math.round(left + window.pin.MainPinSize.WIDTH / 2) + ', ' + Math.round(top + window.pin.MainPinSize.HEIGHT + window.pin.MainPinSize.TAIL);
+    window.dom.advertAddressInput.disabled = true;
   };
 
   var onSuccessRequest = function () {

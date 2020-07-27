@@ -1,6 +1,12 @@
 'use strict';
 
 (function () {
+  var MapCoord = {
+    TOP_Y: 130,
+    BOTTOM_Y: 630,
+    LEFT_X: 0,
+    RIGHT_X: 1200
+  };
 
   var updateAdverts = function (data) {
     window.card.closeCard();
@@ -17,12 +23,13 @@
 
   // функция, которая срабатывает при взаимодействии с главным пином (удаляются классы у блоков карты и формы, перевожу поля формы и фильтра в активное состояние, меняю значение адреса главной метки [смещаю его с центра на ее 'хвост'], затем выключаю поле адреса)
   var activateMap = function () {
+    window.map.isMapActivated = true;
     window.backend.requestToServer('GET', onSuccessLoad, window.utils.renderError); // обращение к бэку за данными
     window.dom.mapBlock.classList.remove('map--faded');
     window.dom.adForm.classList.remove('ad-form--disabled');
     // вызываю функции включения форм и определения адреса главного пина
     window.form.enableForms();
-    window.form.changeAdvertAddressInputValue();
+    window.form.changeAdvertAddressInputValue(window.dom.mainPin.offsetLeft, window.dom.mainPin.offsetTop);
 
     // обратботчик события, который сработает, если при отправке данных на сервер выяснится, что пользователь ввел цену меньше, чем необходимо при выбранном типе жилья
     window.dom.priceAdvertInput.addEventListener('invalid', window.form.onPriceAdvertInputInvalid);
@@ -41,8 +48,8 @@
     window.dom.mapFilterBlock.addEventListener('change', window.filter.onMapFilterBlockChange);
 
     // удаляю обработчики событий взаимодействия с главным пином
-    window.dom.mainPin.removeEventListener('mousedown', window.pin.onMainPinMousedown);
     window.dom.mainPin.removeEventListener('keydown', window.pin.onMainPinKeydown);
+
   };
 
   var deactivateMap = function () {
@@ -64,7 +71,8 @@
   window.map = {
     activateMap: activateMap,
     deactivateMap: deactivateMap,
-    updateAdverts: updateAdverts,
+    MapCoord: MapCoord,
+    updateAdverts: updateAdverts
   };
 
 })();
