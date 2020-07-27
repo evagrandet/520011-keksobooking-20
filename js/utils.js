@@ -21,14 +21,19 @@
     }
     return randomElements;
   };
-  var onMainBlockKeydown = function(evt) {
+
+  var onMainBlockKeydown = function (evt) {
     if (evt.key === ESC_KEY) {
-      closeMessage(evt);
+      closeMessage();
     }
-  }
-  var closeMessage = function (evt) {
-    console.log(evt)
-  }
+  };
+
+  var closeMessage = function () {
+    var successMessage = window.dom.querySelector('.success');
+    if (successMessage) {
+      successMessage.remove();
+    }
+  };
 
   window.utils = {
     ESC_KEY: ESC_KEY,

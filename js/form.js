@@ -123,7 +123,7 @@
     }
   };
 
-   var disableForms = function () {
+  var disableForms = function () {
     for (var j = 0; j < adFormFieldsets.length; j++) {
       adFormFieldsets[j].disabled = true;
     }
@@ -140,16 +140,16 @@
 
   var onSuccessRequest = function () {
     window.map.deactivateMap();
+    document.addEventListener('keydown', window.utils.onMainBlockKeyDown);
     window.dom.mainBlock.appendChild(window.dom.successMessage);
-    window.dom.mainBlock.addEventListener()
-  }
+  };
 
   var onSubmitAdForm = function (evt) {
     evt.preventDefault();
     window.backend.requestToServer('POST',
-      onSuccessRequest,
-      window.utils.renderError,
-      new FormData(adForm)
+        onSuccessRequest,
+        window.utils.renderError,
+        new FormData(adForm)
     );
     window.dom.adForm.reset();
     disableForms();

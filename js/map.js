@@ -39,7 +39,7 @@
   var deactivateMap = function () {
     window.dom.mapBlock.classList.add('map--faded');
     window.dom.adForm.classList.add('ad-form--disabled');
-    window.render.renderMessage('success');
+
     // удаление всех обработчиков событий
     window.dom.priceAdvertInput.removeEventListener('invalid', window.form.onPriceAdvertInputInvalid);
     window.dom.titleAdvertInput.removeEventListener('input', window.form.onTitleAdvertInputInput);
@@ -49,7 +49,7 @@
     window.dom.checkInSelect.removeEventListener('change', window.form.onCheckInSelectChange);
     window.dom.checkOutSelect.removeEventListener('change', window.form.onCheckOutSelectChange);
 
-  }
+  };
 
 
   window.map = {
