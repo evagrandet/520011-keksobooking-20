@@ -7,12 +7,12 @@
   var MainPinSize = {
     width: 62,
     height: 62
-  }
+  };
 
   var PinSize = {
     width: 50,
     height: 70
-  }
+  };
 
   var clearPins = function () {
     var pins = window.dom.mapBlock.querySelectorAll('.map__pin:not(.map__pin--main)');
