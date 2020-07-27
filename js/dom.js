@@ -16,6 +16,7 @@
   var roomsAdvertSelect = adForm.querySelector('#room_number');
   var guestsAdvertSelect = adForm.querySelector('#capacity');
   var advertAddressInput = adForm.querySelector('#address');
+  var resetForm = adForm.querySelector('.ad-form__reset')
 
   // получаю элемент карты из DOM, записываю его в переменную
   var mapBlock = document.querySelector('.map');
@@ -62,6 +63,7 @@
     roomsAdvertSelect: roomsAdvertSelect,
     guestsAdvertSelect: guestsAdvertSelect,
     advertAddressInput: advertAddressInput,
+    resetForm: resetForm,
     mapFilters: mapFilters,
     mapPinsList: mapPinsList,
     mainPin: mainPin,

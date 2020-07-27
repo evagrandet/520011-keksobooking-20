@@ -22,24 +22,32 @@
     return randomElements;
   };
 
-  var onMainBlockKeydown = function (evt) {
+  var onDocumentKeydown = function (type, evt) {
     if (evt.key === ESC_KEY) {
-      closeMessage();
+      closeMessage(type);
     }
+
   };
 
-  var closeMessage = function () {
-    var successMessage = window.dom.querySelector('.success');
-    if (successMessage) {
-      successMessage.remove();
+  var onDocumentClick = function (type) {
+      closeMessage(type);
+  }
+
+  var closeMessage = function (type) {
+    var message = window.dom.mainBlock.querySelector('.' + type);
+    if (message) {
+      message.remove();
     }
+    document.removeEventListener('keydown', onDocumentKeydown)
+    document.removeEventListener('click', onDocumentClick)
   };
 
   window.utils = {
     ESC_KEY: ESC_KEY,
     getRandomElement: getRandomElement,
     getRandomElements: getRandomElements,
-    onMainBlockKeydown: onMainBlockKeydown,
+    onDocumentKeydown: onDocumentKeydown,
+    onDocumentClick: onDocumentClick,
     closeMessage: closeMessage
   };
 })();

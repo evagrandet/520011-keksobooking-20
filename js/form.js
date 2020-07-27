@@ -129,23 +129,27 @@
     }
   };
 
-  // функция высчитывает координаты пина главного, подставляет их в input и отключает его
+  // функция высчитывает координаты пина главного, подставляет их в input
   var changeAdvertAddressInputValue = function (left, top) {
     window.dom.advertAddressInput.value = Math.round(left + window.pin.MainPinSize.WIDTH / 2) + ', ' + Math.round(top + window.pin.MainPinSize.HEIGHT + window.pin.MainPinSize.TAIL);
-    window.dom.advertAddressInput.disabled = true;
   };
 
   var onSuccessRequest = function () {
     window.map.deactivateMap();
-    document.addEventListener('keydown', window.utils.onMainBlockKeyDown);
-    window.dom.mainBlock.appendChild(window.dom.successMessage);
+    window.render.renderMessage('success');
   };
+
+  var onErrorRequest = function () {
+    window.map.deactivateMap();
+    window.render.renderMessage('error');
+  };
+
 
   var onSubmitAdForm = function (evt) {
     evt.preventDefault();
     window.backend.requestToServer('POST',
         onSuccessRequest,
-        window.utils.renderError,
+        onErrorRequest,
         new FormData(adForm)
     );
     window.dom.adForm.reset();
@@ -154,6 +158,16 @@
 
   window.dom.adForm.addEventListener('submit', onSubmitAdForm);
 
+  var onResetFormClick = function (evt) {
+    evt.preventDefault();
+    window.dom.mapFilterBlock.reset();
+    window.dom.adForm.reset();
+    window.card.closeCard();
+    window.pin.clearPins();
+    changeAdvertAddressInputValue(window.pin.MainPinStartCoord.LEFT, window.pin.MainPinStartCoord.TOP)
+    window.dom.mainPin.style.left = window.pin.MainPinStartCoord.LEFT + 'px';
+    window.dom.mainPin.style.top = window.pin.MainPinStartCoord.TOP + 'px';
+  }
 
   window.form = {
     enableForms: enableForms,
@@ -164,6 +178,7 @@
     onTypeAdvertSelectChange: onTypeAdvertSelectChange,
     onRoomsAdvertSelectChange: onRoomsAdvertSelectChange,
     onCheckInSelectChange: onCheckInSelectChange,
-    onCheckOutSelectChange: onCheckOutSelectChange
+    onCheckOutSelectChange: onCheckOutSelectChange,
+    onResetFormClick: onResetFormClick
   };
 })();

@@ -45,11 +45,12 @@
     window.dom.checkInSelect.addEventListener('change', window.form.onCheckInSelectChange);
     window.dom.checkOutSelect.addEventListener('change', window.form.onCheckOutSelectChange);
 
+    window.dom.resetForm.addEventListener('click', window.form.onResetFormClick);
+
     window.dom.mapFilterBlock.addEventListener('change', window.filter.onMapFilterBlockChange);
 
     // удаляю обработчики событий взаимодействия с главным пином
     window.dom.mainPin.removeEventListener('keydown', window.pin.onMainPinKeydown);
-
   };
 
   var deactivateMap = function () {
@@ -64,7 +65,7 @@
     window.dom.roomsAdvertSelect.removeEventListener('change', window.form.onRoomsAdvertSelectChange);
     window.dom.checkInSelect.removeEventListener('change', window.form.onCheckInSelectChange);
     window.dom.checkOutSelect.removeEventListener('change', window.form.onCheckOutSelectChange);
-
+    window.dom.resetForm.removeEventListener('click', window.form.onResetFormClick);
   };
 
 

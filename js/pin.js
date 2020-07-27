@@ -3,11 +3,17 @@
 (function () {
   var ENTER_KEY = 'Enter';
 
+  var MainPinStartCoord = {
+    LEFT: 570,
+    TOP: 375
+  }
+
   var MainPinSize = {
     WIDTH: 62,
     HEIGHT: 62,
     TAIL: 25
   };
+
 
   var PinSize = {
     WIDTH: 50,
@@ -46,6 +52,7 @@
   window.pin = {
     MainPinSize: MainPinSize,
     PinSize: PinSize,
+    MainPinStartCoord: MainPinStartCoord,
     onMainPinMousedown: onMainPinMousedown,
     onMainPinKeydown: onMainPinKeydown,
     clearPins: clearPins
