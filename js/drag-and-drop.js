@@ -8,8 +8,8 @@
 
     // определяю пределы сдвига пина
     var limits = {
-      top: window.map.MapCoord.topY - (window.pin.MainPinSize.height + window.pin.MAIN_PIN_TAIL),
-      bottom: window.map.MapCoord.bottomY - (window.pin.MainPinSize.height + window.pin.MAIN_PIN_TAIL),
+      top: window.map.MapCoord.topY - (window.pin.MainPinSize.height + window.pin.MainPinSize.tail),
+      bottom: window.map.MapCoord.bottomY - (window.pin.MainPinSize.height + window.pin.MainPinSize.tail),
       right: window.map.MapCoord.rightX - Math.floor(window.pin.PinSize.width / 2),
       left: window.map.MapCoord.leftX - Math.floor(window.pin.PinSize.width / 2),
     };

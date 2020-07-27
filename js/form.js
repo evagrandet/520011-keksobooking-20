@@ -121,7 +121,7 @@
 
   // функция высчитывает координаты пина главного, подставляет их в input и отключает его
   var changeAdvertAddressInputValue = function (left, top) {
-    window.dom.advertAddressInput.value = Math.round(left + window.pin.MainPinSize.width / 2) + ', ' + Math.round(top + window.pin.MainPinSize.height + window.pin.MAIN_PIN_TAIL);
+    window.dom.advertAddressInput.value = Math.round(left + window.pin.MainPinSize.width / 2) + ', ' + Math.round(top + window.pin.MainPinSize.height + window.pin.MainPinSize.tail);
     window.dom.advertAddressInput.disabled = true;
   };
 

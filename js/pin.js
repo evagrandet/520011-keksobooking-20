@@ -1,12 +1,12 @@
 'use strict';
 
 (function () {
-  var MAIN_PIN_TAIL = 25;
   var ENTER_KEY = 'Enter';
 
   var MainPinSize = {
     width: 62,
-    height: 62
+    height: 62,
+    tail: 25
   };
 
   var PinSize = {
@@ -45,7 +45,6 @@
 
   window.pin = {
     MainPinSize: MainPinSize,
-    MAIN_PIN_TAIL: MAIN_PIN_TAIL,
     PinSize: PinSize,
     onMainPinMousedown: onMainPinMousedown,
     onMainPinKeydown: onMainPinKeydown,
