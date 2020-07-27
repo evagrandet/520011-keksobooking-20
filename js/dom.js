@@ -20,8 +20,14 @@
   // получаю элемент карты из DOM, записываю его в переменную
   var mapBlock = document.querySelector('.map');
 
-  var mapFilterBlock = mapBlock.querySelector('.map__filters-container');
-  var mapFilters = mapFilterBlock.querySelector('.map__filters').children;
+  var mapFilterContainer = mapBlock.querySelector('.map__filters-container');
+  var mapFilterBlock = mapFilterContainer.querySelector('.map__filters');
+  var mapFilters = mapFilterContainer.querySelector('.map__filters').children;
+  var housingTypeFilter = mapFilterContainer.querySelector('#housing-type');
+  var housingPriceFilter = mapFilterContainer.querySelector('#housing-price');
+  var housingRoomsFilter = mapFilterContainer.querySelector('#housing-rooms');
+  var housingGuestsFilter = mapFilterContainer.querySelector('#housing-guests');
+  var housingFeaturesFilter = mapFilterContainer.querySelector('#housing-features');
 
 
   // получаю элемент, внутри которого будут располагаться все метки на карте, записываю его в переменную
@@ -65,6 +71,13 @@
     cardTemplate: cardTemplate,
     mapFilterBlock: mapFilterBlock,
     successMessage: successMessage,
-    errorMessage: errorMessage
+    errorMessage: errorMessage,
+    mapFilterContainer: mapFilterContainer,
+    mapFilterBlock: mapFilterBlock,
+    housingTypeFilter: housingTypeFilter,
+    housingPriceFilter: housingPriceFilter,
+    housingRoomsFilter: housingRoomsFilter,
+    housingGuestsFilter: housingGuestsFilter,
+    housingFeaturesFilter: housingFeaturesFilter
   };
 })();
