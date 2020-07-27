@@ -1,11 +1,18 @@
 'use strict';
 
 (function () {
-  var adverts = [];
+
+  var updateAdverts = function (data) {
+    window.card.closeCard();
+    window.pin.clearPins();
+    window.render.renderAdverts(data);
+  };
+
+
   // функция, которая отработает в случае успешной загрузки данных
   var onSuccessLoad = function (data) {
-    adverts = data;
-    window.render.renderAdverts(adverts);
+    window.map.adverts = data;
+    updateAdverts(window.map.adverts);
   };
 
   // функция, которая срабатывает при взаимодействии с главным пином (удаляются классы у блоков карты и формы, перевожу поля формы и фильтра в активное состояние, меняю значение адреса главной метки [смещаю его с центра на ее 'хвост'], затем выключаю поле адреса)
@@ -31,6 +38,8 @@
     window.dom.checkInSelect.addEventListener('change', window.form.onCheckInSelectChange);
     window.dom.checkOutSelect.addEventListener('change', window.form.onCheckOutSelectChange);
 
+    window.dom.mapFilterBlock.addEventListener('change', window.filter.onMapFilterBlockChange);
+
     // удаляю обработчики событий взаимодействия с главным пином
     window.dom.mainPin.removeEventListener('mousedown', window.pin.onMainPinMousedown);
     window.dom.mainPin.removeEventListener('keydown', window.pin.onMainPinKeydown);
@@ -38,7 +47,8 @@
 
 
   window.map = {
-    activateMap: activateMap
+    activateMap: activateMap,
+    updateAdverts: updateAdverts
   };
 
 })();
