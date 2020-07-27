@@ -9,6 +9,14 @@
   var PIN_HEIGHT = 70;
   var ENTER_KEY = 'Enter';
 
+  var clearPins = function () {
+    var pins = window.dom.mapBlock.querySelectorAll('.map__pin:not(.map__pin--main)');
+
+    pins.forEach(function (item) {
+      window.dom.mapPinsList.removeChild(item);
+    });
+  };
+
   // функция, которая будет срабатывать на нажатии левой кнопки мыши, и которая будет активировать карту
   var onMainPinMousedown = function (evt) {
     if (evt.buttons === 1 && !window.map.isMapActivated) {
@@ -38,5 +46,6 @@
     PIN_HEIGHT: PIN_HEIGHT,
     onMainPinMousedown: onMainPinMousedown,
     onMainPinKeydown: onMainPinKeydown,
+    clearPins: clearPins
   };
 })();

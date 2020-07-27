@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var ADVERT_COUNT = 8;
+  var ADVERT_COUNT = 5;
 
   // получаю шаблон метки, добираюсь до разметки внутри
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
@@ -48,7 +48,7 @@
 
 
   var renderCard = function (data) {
-    window.dom.mapBlock.insertBefore(window.card.createCard(data), window.dom.mapFilterBlock);
+    window.dom.mapBlock.insertBefore(window.card.createCard(data), window.dom.mapFilterContainer);
   };
 
 
