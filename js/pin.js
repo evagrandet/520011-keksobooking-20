@@ -1,13 +1,18 @@
 'use strict';
 
 (function () {
-  var MAIN_PIN_WIDTH = 62;
-  var MAIN_PIN_HEIGHT = 62;
   var MAIN_PIN_TAIL = 25;
-
-  var PIN_WIDTH = 50;
-  var PIN_HEIGHT = 70;
   var ENTER_KEY = 'Enter';
+
+  var MainPinSize = {
+    width: 62,
+    height: 62
+  }
+
+  var PinSize = {
+    width: 50,
+    height: 70
+  }
 
   var clearPins = function () {
     var pins = window.dom.mapBlock.querySelectorAll('.map__pin:not(.map__pin--main)');
@@ -22,7 +27,7 @@
     if (evt.buttons === 1 && !window.map.isMapActivated) {
       window.map.activateMap();
     } else if (evt.buttons === 1 && window.map.isMapActivated) {
-      window.dnd.dragAndDropMainPin(evt);
+      window.dragAndDrop.dragAndDropMainPin(evt);
     }
   };
 
@@ -39,11 +44,9 @@
 
 
   window.pin = {
-    MAIN_PIN_WIDTH: MAIN_PIN_WIDTH,
-    MAIN_PIN_HEIGHT: MAIN_PIN_HEIGHT,
+    MainPinSize: MainPinSize,
     MAIN_PIN_TAIL: MAIN_PIN_TAIL,
-    PIN_WIDTH: PIN_WIDTH,
-    PIN_HEIGHT: PIN_HEIGHT,
+    PinSize: PinSize,
     onMainPinMousedown: onMainPinMousedown,
     onMainPinKeydown: onMainPinKeydown,
     clearPins: clearPins

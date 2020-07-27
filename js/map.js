@@ -1,10 +1,12 @@
 'use strict';
 
 (function () {
-  var MAP_TOP_Y = 130;
-  var MAP_BOTTOM_Y = 630;
-  var MAP_LEFT_X = 0;
-  var MAP_RIGHT_X = 1200;
+  var MapCoord = {
+    topY: 130,
+    bottomY: 630,
+    leftX: 0,
+    rightX: 1200
+  };
 
   var updateAdverts = function (data) {
     window.card.closeCard();
@@ -53,10 +55,7 @@
 
   window.map = {
     activateMap: activateMap,
-    MAP_TOP_Y: MAP_TOP_Y,
-    MAP_BOTTOM_Y: MAP_BOTTOM_Y,
-    MAP_LEFT_X: MAP_LEFT_X,
-    MAP_RIGHT_X: MAP_RIGHT_X,
+    MapCoord: MapCoord,
     updateAdverts: updateAdverts
   };
 

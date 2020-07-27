@@ -10,7 +10,7 @@
 
 
   // нахожу поле адреса и сразу туда вписываю значение центра главного пина
-  window.dom.advertAddressInput.value = Math.round(window.dom.mainPin.offsetLeft + window.pin.MAIN_PIN_WIDTH / 2) + ', ' + Math.round(window.dom.mainPin.offsetTop + window.pin.MAIN_PIN_HEIGHT / 2);
+  window.dom.advertAddressInput.value = Math.round(window.dom.mainPin.offsetLeft + window.pin.MainPinSize.width / 2) + ', ' + Math.round(window.dom.mainPin.offsetTop + window.pin.MainPinSize.height / 2);
 
 
   // структура данных для выражения типа и минимальной цены жилья
@@ -121,7 +121,7 @@
 
   // функция высчитывает координаты пина главного, подставляет их в input и отключает его
   var changeAdvertAddressInputValue = function (left, top) {
-    window.dom.advertAddressInput.value = Math.round(left + window.pin.MAIN_PIN_WIDTH / 2) + ', ' + Math.round(top + window.pin.MAIN_PIN_HEIGHT + window.pin.MAIN_PIN_TAIL);
+    window.dom.advertAddressInput.value = Math.round(left + window.pin.MainPinSize.width / 2) + ', ' + Math.round(top + window.pin.MainPinSize.height + window.pin.MAIN_PIN_TAIL);
     window.dom.advertAddressInput.disabled = true;
   };
 

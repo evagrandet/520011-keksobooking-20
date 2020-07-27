@@ -8,10 +8,10 @@
 
     // определяю пределы сдвига пина
     var limits = {
-      top: window.map.MAP_TOP_Y - (window.pin.MAIN_PIN_HEIGHT + window.pin.MAIN_PIN_TAIL),
-      bottom: window.map.MAP_BOTTOM_Y - (window.pin.MAIN_PIN_HEIGHT + window.pin.MAIN_PIN_TAIL),
-      right: window.map.MAP_RIGHT_X - Math.floor(window.pin.PIN_WIDTH / 2),
-      left: window.map.MAP_LEFT_X - Math.floor(window.pin.PIN_WIDTH / 2),
+      top: window.map.MapCoord.topY - (window.pin.MainPinSize.height + window.pin.MAIN_PIN_TAIL),
+      bottom: window.map.MapCoord.bottomY - (window.pin.MainPinSize.height + window.pin.MAIN_PIN_TAIL),
+      right: window.map.MapCoord.rightX - Math.floor(window.pin.PinSize.width / 2),
+      left: window.map.MapCoord.leftX - Math.floor(window.pin.PinSize.width / 2),
     };
 
     // стартовые координаты, с которых началось перетаскивание
@@ -21,14 +21,14 @@
     };
 
     // переменная-флаг для понимания того, собирается ли пользователь передвигать пин
-    window.dnd.isDragged = false;
+    window.dragAndDrop.isDragged = false;
 
     // функция, которая будет отрабатывать при движении мыши
     var onMapBlockMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
 
       // подтверждение, что пользователь собирается двигать пин
-      window.dnd.isDragged = true;
+      window.dragAndDrop.isDragged = true;
 
       // координаты смещения
       var shift = {
@@ -74,7 +74,7 @@
       document.removeEventListener('mouseup', onDocumentMouseUp);
 
       // если пользователь двигает пин, то нужно отменить действие на клик мыши по умолчанию
-      if (window.dnd.isDragged) {
+      if (window.dragAndDrop.isDragged) {
         var onClickPreventDefault = function (clickEvt) {
           clickEvt.preventDefault();
           window.dom.mainPin.removeEventListener('click', onClickPreventDefault);
@@ -86,7 +86,7 @@
     window.dom.mapBlock.addEventListener('mousemove', onMapBlockMouseMove);
     document.addEventListener('mouseup', onDocumentMouseUp);
   };
-  window.dnd = {
+  window.dragAndDrop = {
     dragAndDropMainPin: dragAndDropMainPin
   };
 })();
