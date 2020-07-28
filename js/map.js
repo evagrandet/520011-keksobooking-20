@@ -22,8 +22,8 @@
   };
 
   var onErrorLoad = function () {
-    window.render.renderMessage('error')
-  }
+    window.render.renderMessage('error');
+  };
 
   // функция, которая срабатывает при взаимодействии с главным пином (удаляются классы у блоков карты и формы, перевожу поля формы и фильтра в активное состояние, меняю значение адреса главной метки [смещаю его с центра на ее 'хвост'], затем выключаю поле адреса)
   var activateMap = function () {
@@ -44,7 +44,6 @@
     // добавляю обработчик события с функцией выше на селект выбора типа жилья
     window.dom.typeAdvertSelect.addEventListener('change', window.form.onTypeAdvertSelectChange);
 
-    window.dom.adForm.addEventListener('invalid', window.form.onAdFormInvalid)
     // обработчик событий для полей количества комнат
     window.dom.roomsAdvertSelect.addEventListener('change', window.form.onRoomsAdvertSelectChange);
     // добавляю обработчики событий на поля въезда-выезда

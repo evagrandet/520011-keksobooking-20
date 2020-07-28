@@ -110,10 +110,6 @@
     }
   };
 
-  var onAdFormInvalid = function (evt) {
-    console.log(evt)
-  }
-
   // функция включения форм
   var enableForms = function () {
     for (var j = 0; j < adFormFieldsets.length; j++) {
@@ -177,7 +173,6 @@
     onPriceAdvertInputInvalid: onPriceAdvertInputInvalid,
     onTitleAdvertInputInput: onTitleAdvertInputInput,
     onTitleAdvertInputInvalid: onTitleAdvertInputInvalid,
-    onAdFormInvalid: onAdFormInvalid,
     onTypeAdvertSelectChange: onTypeAdvertSelectChange,
     onRoomsAdvertSelectChange: onRoomsAdvertSelectChange,
     onCheckInSelectChange: onCheckInSelectChange,
