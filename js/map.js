@@ -47,16 +47,57 @@
 
     window.dom.mapFilterBlock.addEventListener('change', window.utils.debounce(window.filter.onMapFilterBlockChange));
 
+    window.dom.resetForm.addEventListener('click', window.form.onResetFormClick);
+
     // удаляю обработчики событий взаимодействия с главным пином
     window.dom.mainPin.removeEventListener('keydown', window.pin.onMainPinKeydown);
+  };
 
+
+  // функция сброса страницы, внутри которой будут сбрасываться все формы/фильтры, закрываться карточки, удаляться пины похожих объявлений и главный пин будет возвращаться на центр карты
+  var resetPage = function () {
+    window.dom.mapFilterBlock.reset();
+    window.dom.adForm.reset();
+    window.card.closeCard();
+    window.pin.clearPins();
+    window.dom.mainPin.style.left = window.pin.MainPinStartCoord.LEFT + 'px';
+    window.dom.mainPin.style.top = window.pin.MainPinStartCoord.TOP + 'px';
+
+  };
+
+  // функция деактивации страницы, внутри которой
+  var deactivateMap = function () {
+    // будет обновляться флаг для невозможности перетаскивания
+    window.map.isMapActivated = false;
+    // добавляться классы
+    window.dom.mapBlock.classList.add('map--faded');
+    window.dom.adForm.classList.add('ad-form--disabled');
+    // функция обнуление страницы
+    resetPage();
+    // обновление списка объявлений безо всяких фильтров
+    updateAdverts(window.map.adverts);
+    // пересчет данных для инпута поля адреса
+    window.form.changeAdvertAddressInputValue(window.pin.MainPinStartCoord.LEFT, (window.pin.MainPinStartCoord.TOP - window.pin.MainPinSize.TAIL - window.pin.MainPinSize.HEIGHT / 2));
+
+
+    // удаление всех обработчиков событий
+    window.dom.priceAdvertInput.removeEventListener('invalid', window.form.onPriceAdvertInputInvalid);
+    window.dom.titleAdvertInput.removeEventListener('input', window.form.onTitleAdvertInputInput);
+    window.dom.titleAdvertInput.removeEventListener('invalid', window.form.onTitleAdvertInputInvalid);
+    window.dom.typeAdvertSelect.removeEventListener('change', window.form.onTypeAdvertSelectChange);
+    window.dom.roomsAdvertSelect.removeEventListener('change', window.form.onRoomsAdvertSelectChange);
+    window.dom.checkInSelect.removeEventListener('change', window.form.onCheckInSelectChange);
+    window.dom.checkOutSelect.removeEventListener('change', window.form.onCheckOutSelectChange);
+    window.dom.resetForm.removeEventListener('click', window.form.onResetFormClick);
   };
 
 
   window.map = {
     activateMap: activateMap,
+    deactivateMap: deactivateMap,
     MapCoord: MapCoord,
-    updateAdverts: updateAdverts
+    updateAdverts: updateAdverts,
+    resetPage: resetPage
   };
 
 })();

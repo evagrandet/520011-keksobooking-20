@@ -5,6 +5,7 @@
   var MIN_TITLE_LENGTH = 30;
   var MAX_TITLE_LENGTH = 100;
 
+  var adForm = document.querySelector('.ad-form');
   // нахожу все дочерние элементы у блока с фильтрами карты
   var adFormFieldsets = window.dom.adForm.children;
 
@@ -119,27 +120,53 @@
     }
   };
 
-  // функция высчитывает координаты пина главного, подставляет их в input и отключает его
+  var disableForms = function () {
+    for (var j = 0; j < adFormFieldsets.length; j++) {
+      adFormFieldsets[j].disabled = true;
+    }
+    for (var k = 0; k < window.dom.mapFilters.length; k++) {
+      window.dom.mapFilters[k].disabled = true;
+    }
+  };
+
+  // функция высчитывает координаты пина главного, подставляет их в input
   var changeAdvertAddressInputValue = function (left, top) {
     window.dom.advertAddressInput.value = Math.round(left + window.pin.MainPinSize.WIDTH / 2) + ', ' + Math.round(top + window.pin.MainPinSize.HEIGHT + window.pin.MainPinSize.TAIL);
-    window.dom.advertAddressInput.disabled = true;
   };
 
 
+  // функция, которая сработает в случае удачной отправки формы (деактивирует карту и отображает попап успеха)
+  var onSuccessRequest = function () {
+    window.map.deactivateMap();
+    window.render.renderMessage('success');
+  };
+
+  // функция, которая сработает в случае неудачной отправки формы (отображает попап неуспеха)
+  var onErrorRequest = function () {
+    window.render.renderMessage('error');
+  };
+
+  // функция, которая будет срабатывать при отправке формы
   var onSubmitAdForm = function (evt) {
     evt.preventDefault();
-    // удаление всех обработчиков событий
-    window.dom.priceAdvertInput.removeEventListener('invalid', onPriceAdvertInputInvalid);
-    window.dom.titleAdvertInput.removeEventListener('input', onTitleAdvertInputInput);
-    window.dom.titleAdvertInput.removeEventListener('invalid', onTitleAdvertInputInvalid);
-    window.dom.typeAdvertSelect.removeEventListener('change', onTypeAdvertSelectChange);
-    window.dom.roomsAdvertSelect.removeEventListener('change', onRoomsAdvertSelectChange);
-    window.dom.checkInSelect.removeEventListener('change', onCheckInSelectChange);
-    window.dom.checkOutSelect.removeEventListener('change', onCheckOutSelectChange);
+    window.backend.requestToServer('POST',
+        onSuccessRequest,
+        onErrorRequest,
+        new FormData(adForm)
+    );
+    window.dom.adForm.reset();
+    window.map.deactivateMap();
+    disableForms();
   };
 
   window.dom.adForm.addEventListener('submit', onSubmitAdForm);
 
+  // функция, которая сработает при нажатии на кнопку очистки формы
+  var onResetFormClick = function (evt) {
+    evt.preventDefault();
+    window.map.resetPage();
+    changeAdvertAddressInputValue(window.pin.MainPinStartCoord.LEFT, window.pin.MainPinStartCoord.TOP);
+  };
 
   window.form = {
     enableForms: enableForms,
@@ -150,6 +177,7 @@
     onTypeAdvertSelectChange: onTypeAdvertSelectChange,
     onRoomsAdvertSelectChange: onRoomsAdvertSelectChange,
     onCheckInSelectChange: onCheckInSelectChange,
-    onCheckOutSelectChange: onCheckOutSelectChange
+    onCheckOutSelectChange: onCheckOutSelectChange,
+    onResetFormClick: onResetFormClick
   };
 })();

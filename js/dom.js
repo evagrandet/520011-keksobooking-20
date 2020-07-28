@@ -1,6 +1,9 @@
 'use strict';
 
 (function () {
+
+  var mainBlock = document.querySelector('main');
+
   // нахожу форму и все ее элементы
   var adForm = document.querySelector('.ad-form');
 
@@ -13,6 +16,7 @@
   var roomsAdvertSelect = adForm.querySelector('#room_number');
   var guestsAdvertSelect = adForm.querySelector('#capacity');
   var advertAddressInput = adForm.querySelector('#address');
+  var resetForm = adForm.querySelector('.ad-form__reset');
 
   // получаю элемент карты из DOM, записываю его в переменную
   var mapBlock = document.querySelector('.map');
@@ -39,11 +43,17 @@
   // получаю шаблон карточки объявляения, добираюсь до разметки внутри
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
+  // шаблоны сообщений ошибки и успеха
+  var successMessage = document.querySelector('#success').content.querySelector('.success');
+  var errorMessage = document.querySelector('#error').content.querySelector('.error');
+
+
   // создаю 'контейнер' будущей разметки всех элементов, отрендеренных по шаблону
   var fragment = document.createDocumentFragment();
 
 
   window.dom = {
+    mainBlock: mainBlock,
     adForm: adForm,
     titleAdvertInput: titleAdvertInput,
     typeAdvertSelect: typeAdvertSelect,
@@ -53,6 +63,7 @@
     roomsAdvertSelect: roomsAdvertSelect,
     guestsAdvertSelect: guestsAdvertSelect,
     advertAddressInput: advertAddressInput,
+    resetForm: resetForm,
     mapFilters: mapFilters,
     mapPinsList: mapPinsList,
     mainPin: mainPin,
@@ -60,8 +71,10 @@
     pinTemplate: pinTemplate,
     fragment: fragment,
     cardTemplate: cardTemplate,
-    mapFilterContainer: mapFilterContainer,
     mapFilterBlock: mapFilterBlock,
+    successMessage: successMessage,
+    errorMessage: errorMessage,
+    mapFilterContainer: mapFilterContainer,
     housingTypeFilter: housingTypeFilter,
     housingPriceFilter: housingPriceFilter,
     housingRoomsFilter: housingRoomsFilter,
