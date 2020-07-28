@@ -59,13 +59,12 @@
         cb.apply(null, parameters);
       }, DEBOUNCE_INTERVAL);
     };
-  }
+  };
 
   window.utils = {
     ESC_KEY: ESC_KEY,
     getRandomElement: getRandomElement,
     getRandomElements: getRandomElements,
-    renderError: renderError,
     debounce: debounce,
     onDocumentKeydown: onDocumentKeydown,
     onDocumentClick: onDocumentClick,
