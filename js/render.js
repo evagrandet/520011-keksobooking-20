@@ -3,9 +3,6 @@
 (function () {
   var ADVERT_COUNT = 5;
 
-  // получаю шаблон метки, добираюсь до разметки внутри
-  var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
-
   var onPinElementClick = function (advert, evt) {
     // проверяю наличие открытых карточек и закрываю их
     window.card.closeCard();
@@ -23,10 +20,10 @@
 
   // функция для отображения объявлений в пинах
   var createAdverts = function (advert) {
-    var pinElement = pinTemplate.cloneNode(true);
+    var pinElement = window.dom.pinTemplate.cloneNode(true);
     var pinImage = pinElement.querySelector('img');
-    pinElement.style.left = advert.location.x - window.pin.PinSize.width / 2 + 'px';
-    pinElement.style.top = advert.location.y - window.pin.PinSize.height + 'px';
+    pinElement.style.left = advert.location.x - window.pin.PinSize.WIDTH / 2 + 'px';
+    pinElement.style.top = advert.location.y - window.pin.PinSize.HEIGHT + 'px';
     pinImage.src = advert.author.avatar;
     pinImage.setAttribute('alt', advert.offer.title);
     pinElement.addEventListener('click', onPinElementClick.bind(null, advert));
@@ -43,7 +40,6 @@
     }
     // разом добавляю все пины-объявления в конец элемента, в котором должна быть разметка пинов
     window.dom.mapPinsList.appendChild(fragment);
-
   };
 
 
@@ -51,10 +47,28 @@
     window.dom.mapBlock.insertBefore(window.card.createCard(data), window.dom.mapFilterContainer);
   };
 
+  var renderMessage = function (type) {
+    // рендерю попап
+    // добавляю обработчик события клика
+    // добавляю обработчик события кейдаун
+    // внутри функции-обработчика общая функция, которая закрывает попап и удаляет обработчики
+    document.addEventListener('keydown', window.utils.onDocumentKeydown.bind(null, type));
+    document.addEventListener('click', window.utils.onDocumentClick.bind(null, type));
+    switch (type) {
+      case 'success':
+        window.dom.mainBlock.appendChild(window.dom.successMessage);
+        break;
+      case 'error':
+        window.dom.mainBlock.appendChild(window.dom.errorMessage);
+        break;
+    }
+  };
+
 
   window.render = {
     renderAdverts: renderAdverts,
-    renderCard: renderCard
+    renderCard: renderCard,
+    renderMessage: renderMessage
   };
 
 })();
