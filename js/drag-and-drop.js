@@ -10,8 +10,8 @@
     var limits = {
       top: window.map.MapCoord.TOP_Y - (window.pin.MainPinSize.HEIGHT + window.pin.MainPinSize.TAIL),
       bottom: window.map.MapCoord.BOTTOM_Y - (window.pin.MainPinSize.HEIGHT + window.pin.MainPinSize.TAIL),
-      right: window.map.MapCoord.RIGHT_X - Math.floor(window.pin.PinSize.width / 2),
-      left: window.map.MapCoord.LEFT_X - Math.floor(window.pin.PinSize.width / 2),
+      right: window.map.MapCoord.RIGHT_X - Math.floor(window.pin.PinSize.WIDTH / 2),
+      left: window.map.MapCoord.LEFT_X - Math.floor(window.pin.PinSize.WIDTH / 2),
     };
 
     // стартовые координаты, с которых началось перетаскивание

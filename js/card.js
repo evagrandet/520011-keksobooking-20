@@ -31,6 +31,7 @@
       var li = document.createElement('li');
       li.textContent = feature;
       li.className = 'popup__feature popup__feature--' + feature;
+      container.appendChild(li);
     });
   };
 
@@ -75,7 +76,6 @@
     card.querySelector('.popup__text--capacity').textContent = advert.offer.rooms + ' комнаты для ' + advert.offer.guests + ' гостей';
     card.querySelector('.popup__text--time').textContent = 'Заезд после ' + advert.offer.checkin + ', выезд до ' + advert.offer.checkout;
     card.querySelector('.popup__description').textContent = advert.offer.description;
-
     renderImage(imageContainer, advert.offer.photos);
     renderFeature(featureContainer, advert.offer.features);
 
