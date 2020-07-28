@@ -110,6 +110,10 @@
     }
   };
 
+  var onAdFormInvalid = function (evt) {
+    console.log(evt)
+  }
+
   // функция включения форм
   var enableForms = function () {
     for (var j = 0; j < adFormFieldsets.length; j++) {
@@ -137,7 +141,9 @@
 
   // функция, которая сработает в случае удачной отправки формы (деактивирует карту и отображает попап успеха)
   var onSuccessRequest = function () {
+    window.dom.adForm.reset();
     window.map.deactivateMap();
+    disableForms();
     window.render.renderMessage('success');
   };
 
@@ -154,9 +160,6 @@
         onErrorRequest,
         new FormData(adForm)
     );
-    window.dom.adForm.reset();
-    window.map.deactivateMap();
-    disableForms();
   };
 
   window.dom.adForm.addEventListener('submit', onSubmitAdForm);
@@ -164,7 +167,7 @@
   // функция, которая сработает при нажатии на кнопку очистки формы
   var onResetFormClick = function (evt) {
     evt.preventDefault();
-    window.map.resetPage();
+    window.map.deactivateMap();
     changeAdvertAddressInputValue(window.pin.MainPinStartCoord.LEFT, window.pin.MainPinStartCoord.TOP);
   };
 
@@ -174,6 +177,7 @@
     onPriceAdvertInputInvalid: onPriceAdvertInputInvalid,
     onTitleAdvertInputInput: onTitleAdvertInputInput,
     onTitleAdvertInputInvalid: onTitleAdvertInputInvalid,
+    onAdFormInvalid: onAdFormInvalid,
     onTypeAdvertSelectChange: onTypeAdvertSelectChange,
     onRoomsAdvertSelectChange: onRoomsAdvertSelectChange,
     onCheckInSelectChange: onCheckInSelectChange,

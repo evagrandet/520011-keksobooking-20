@@ -21,10 +21,14 @@
     updateAdverts(window.map.adverts);
   };
 
+  var onErrorLoad = function () {
+    window.render.renderMessage('error')
+  }
+
   // функция, которая срабатывает при взаимодействии с главным пином (удаляются классы у блоков карты и формы, перевожу поля формы и фильтра в активное состояние, меняю значение адреса главной метки [смещаю его с центра на ее 'хвост'], затем выключаю поле адреса)
   var activateMap = function () {
     window.map.isMapActivated = true;
-    window.backend.requestToServer('GET', onSuccessLoad, window.utils.renderError); // обращение к бэку за данными
+    window.backend.requestToServer('GET', onSuccessLoad, onErrorLoad); // обращение к бэку за данными
     window.dom.mapBlock.classList.remove('map--faded');
     window.dom.adForm.classList.remove('ad-form--disabled');
     // вызываю функции включения форм и определения адреса главного пина
@@ -39,6 +43,8 @@
     window.dom.titleAdvertInput.addEventListener('input', window.form.onTitleAdvertInputInput);
     // добавляю обработчик события с функцией выше на селект выбора типа жилья
     window.dom.typeAdvertSelect.addEventListener('change', window.form.onTypeAdvertSelectChange);
+
+    window.dom.adForm.addEventListener('invalid', window.form.onAdFormInvalid)
     // обработчик событий для полей количества комнат
     window.dom.roomsAdvertSelect.addEventListener('change', window.form.onRoomsAdvertSelectChange);
     // добавляю обработчики событий на поля въезда-выезда
@@ -72,10 +78,10 @@
     // добавляться классы
     window.dom.mapBlock.classList.add('map--faded');
     window.dom.adForm.classList.add('ad-form--disabled');
-    // функция обнуление страницы
-    resetPage();
     // обновление списка объявлений безо всяких фильтров
     updateAdverts(window.map.adverts);
+    // функция обнуление страницы
+    resetPage();
     // пересчет данных для инпута поля адреса
     window.form.changeAdvertAddressInputValue(window.pin.MainPinStartCoord.LEFT, (window.pin.MainPinStartCoord.TOP - window.pin.MainPinSize.TAIL - window.pin.MainPinSize.HEIGHT / 2));
 
