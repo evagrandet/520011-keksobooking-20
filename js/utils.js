@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var DEBOUNCE_INTERVAL = 1000;
   var ESC_KEY = 'Escape';
 
   // функция для получения случайного элемента из массива
@@ -44,10 +45,27 @@
     document.removeEventListener('click', onDocumentClick);
   };
 
+  var debounce = function (cb) {
+    var lastTimeout = null;
+
+    return function () {
+      var parameters = arguments;
+
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+
+      lastTimeout = window.setTimeout(function () {
+        cb.apply(null, parameters);
+      }, DEBOUNCE_INTERVAL);
+    };
+  };
+
   window.utils = {
     ESC_KEY: ESC_KEY,
     getRandomElement: getRandomElement,
     getRandomElements: getRandomElements,
+    debounce: debounce,
     onDocumentKeydown: onDocumentKeydown,
     onDocumentClick: onDocumentClick,
     closeMessage: closeMessage

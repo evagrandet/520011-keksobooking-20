@@ -28,7 +28,7 @@
   var housingPriceFilter = mapFilterContainer.querySelector('#housing-price');
   var housingRoomsFilter = mapFilterContainer.querySelector('#housing-rooms');
   var housingGuestsFilter = mapFilterContainer.querySelector('#housing-guests');
-  var housingFeaturesFilter = mapFilterContainer.querySelector('#housing-features');
+  var housingFeatures = mapFilterContainer.querySelector('#housing-features').querySelectorAll('input');
 
 
   // получаю элемент, внутри которого будут располагаться все метки на карте, записываю его в переменную
@@ -79,6 +79,6 @@
     housingPriceFilter: housingPriceFilter,
     housingRoomsFilter: housingRoomsFilter,
     housingGuestsFilter: housingGuestsFilter,
-    housingFeaturesFilter: housingFeaturesFilter
+    housingFeatures: housingFeatures
   };
 })();
