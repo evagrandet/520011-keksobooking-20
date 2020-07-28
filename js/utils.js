@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var ESC_KEY = 'Escape';
 
   // функция для получения случайного элемента из массива
   var getRandomElement = function (elements) {
@@ -21,23 +22,34 @@
     return randomElements;
   };
 
-  // функция отображения сообщения об ошибке
-  var renderError = function (errorMessage) {
-    var error = document.createElement('div');
-    error.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
-    error.style.position = 'absolute';
-    error.style.left = '0';
-    error.style.right = '0';
-    error.style.fontSize = '30px';
 
-    error.textContent = errorMessage;
-    document.body.insertAdjacentElement('afterbegin', error);
+  // функции, которые сработают при нажатии клавиши Escape и клике при открытом попапе удачи/неуспеха (и которые вызовут другую функцию)
+  var onDocumentKeydown = function (type, evt) {
+    if (evt.key === ESC_KEY) {
+      closeMessage(type);
+    }
   };
 
+  var onDocumentClick = function (type) {
+    closeMessage(type);
+  };
+
+  // функция, которая удалит попап успеха/неудачи а так же удалит обработчики событий на них
+  var closeMessage = function (type) {
+    var message = window.dom.mainBlock.querySelector('.' + type);
+    if (message) {
+      message.remove();
+    }
+    document.removeEventListener('keydown', onDocumentKeydown);
+    document.removeEventListener('click', onDocumentClick);
+  };
 
   window.utils = {
+    ESC_KEY: ESC_KEY,
     getRandomElement: getRandomElement,
     getRandomElements: getRandomElements,
-    renderError: renderError
+    onDocumentKeydown: onDocumentKeydown,
+    onDocumentClick: onDocumentClick,
+    closeMessage: closeMessage
   };
 })();
