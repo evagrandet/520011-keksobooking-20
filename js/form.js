@@ -77,27 +77,27 @@
   };
 
   var switchInvalidStyles = function (element, state) {
-    element.classList[state]('ad-form__input--error')
-  }
+    element.classList[state]('ad-form__input--error');
+  };
 
 
   var deletesErrorStyles = function () {
     Array.from(window.dom.adForm.children).forEach(function (child) {
       var errorInput = child.querySelector('.ad-form__input--error');
       if (errorInput) {
-        switchInvalidStyles(errorInput, 'remove')
+        switchInvalidStyles(errorInput, 'remove');
       }
-    })
-  }
+    });
+  };
 
   // функция обработки события невалидности поля цены
   var onPriceAdvertInputInvalid = function () {
-    switchInvalidStyles(window.dom.priceAdvertInput, 'add')
+    switchInvalidStyles(window.dom.priceAdvertInput, 'add');
   };
 
   // функция обработки события невалидности поля заголовка
   var onTitleAdvertInputInvalid = function () {
-    switchInvalidStyles(window.dom.titleAdvertInput, 'add')
+    switchInvalidStyles(window.dom.titleAdvertInput, 'add');
     if (window.dom.titleAdvertInput.validity.tooShort) {
       window.dom.titleAdvertInput.setCustomValidity('Заголовок объявления должен состоять минимум из 30 символов');
     } else if (window.dom.titleAdvertInput.validity.tooLong) {
@@ -129,7 +129,7 @@
     for (var k = 0; k < window.dom.mapFilters.length; k++) {
       window.dom.mapFilters[k].disabled = state;
     }
-  }
+  };
 
   // функция высчитывает координаты пина главного, подставляет их в input
   var changeAdvertAddressInputValue = function (left, top) {

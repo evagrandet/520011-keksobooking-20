@@ -32,14 +32,14 @@
 
 
   var renderAdverts = function (data) {
-      // создаю 'контейнер' будущей разметки
-      var fragment = document.createDocumentFragment();
-      var takeNumber = data.length > ADVERT_COUNT ? ADVERT_COUNT : data.length;
-      for (var i = 0; i < takeNumber; i++) {
-        fragment.appendChild(createAdverts(data[i]));
-      }
-      // разом добавляю все пины-объявления в конец элемента, в котором должна быть разметка пинов
-      window.dom.mapPinsList.appendChild(fragment);
+    // создаю 'контейнер' будущей разметки
+    var fragment = document.createDocumentFragment();
+    var takeNumber = data.length > ADVERT_COUNT ? ADVERT_COUNT : data.length;
+    for (var i = 0; i < takeNumber; i++) {
+      fragment.appendChild(createAdverts(data[i]));
+    }
+    // разом добавляю все пины-объявления в конец элемента, в котором должна быть разметка пинов
+    window.dom.mapPinsList.appendChild(fragment);
   };
 
 

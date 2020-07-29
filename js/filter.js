@@ -7,11 +7,11 @@
     LOW: 'low',
     MIDDLE: 'middle',
     HIGH: 'high'
-  }
+  };
   var PriceLimit = {
     LOW: 10000,
     MIDDLE: 50000,
-  }
+  };
 
   // функция, которая применяет все сильтры и возвращает список объявлений, подходящий всем условиям
   var applyFilters = function (adverts) {
