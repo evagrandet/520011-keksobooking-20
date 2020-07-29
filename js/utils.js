@@ -6,18 +6,19 @@
 
   // функции, которые сработают при нажатии клавиши Escape и клике при открытом попапе удачи/неуспеха (и которые вызовут другую функцию)
   var onDocumentKeydown = function (evt) {
+    var message = document.querySelector('[data-popup]');
     if (evt.key === ESC_KEY) {
-      closeMessage(evt.target.className);
+      closeMessage(message);
     }
   };
 
-  var onDocumentClick = function (evt) {
-    closeMessage(evt.target.className);
+  var onDocumentClick = function () {
+    var message = document.querySelector('[data-popup]');
+    closeMessage(message);
   };
 
   // функция, которая удалит попап успеха/неудачи а так же удалит обработчики событий на них
-  var closeMessage = function (className) {
-    var message = window.dom.mainBlock.querySelector('.' + className);
+  var closeMessage = function (message) {
     if (message) {
       message.remove();
       document.removeEventListener('keydown', onDocumentKeydown);
