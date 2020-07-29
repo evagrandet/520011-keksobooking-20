@@ -17,7 +17,7 @@
   var applyFilters = function (adverts) {
     var filteredAdverts = [];
     for (var i = 0; i < adverts.length; i++) {
-      var advert = adverts.length[i];
+      var advert = adverts[i];
       if (filterHousingType(advert) &&
           filterHousingPrice(advert) &&
           filterHousingRooms(advert) &&
