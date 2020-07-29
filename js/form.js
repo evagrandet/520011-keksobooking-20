@@ -5,13 +5,9 @@
   var MIN_TITLE_LENGTH = 30;
   var MAX_TITLE_LENGTH = 100;
 
-  var adForm = document.querySelector('.ad-form');
-  // нахожу все дочерние элементы у блока с фильтрами карты
-  var adFormFieldsets = window.dom.adForm.children;
-
 
   // нахожу поле адреса и сразу туда вписываю значение центра главного пина
-  window.dom.advertAddressInput.value = Math.round(window.dom.mainPin.offsetLeft + window.pin.MainPinSize.WIDTH / 2) + ', ' + Math.round(window.dom.mainPin.offsetTop + window.pin.MainPinSize.HEIGHT / 2);
+  window.dom.advertAddressInput.value = Math.round(window.dom.mainPin.offsetLeft + window.pin.MainSize.WIDTH / 2) + ', ' + Math.round(window.dom.mainPin.offsetTop + window.pin.MainSize.HEIGHT / 2);
 
 
   // структура данных для выражения типа и минимальной цены жилья
@@ -32,32 +28,36 @@
 
   // при загрузке страницы сразу прохожусь по всем полям форм/фильтров и перевожу их в нактивное состояние
   window.onload = function () {
-    for (var j = 0; j < adFormFieldsets.length; j++) {
-      adFormFieldsets[j].disabled = true;
+    for (var j = 0; j < window.dom.adFormFieldsets.length; j++) {
+      window.dom.adFormFieldsets[j].disabled = true;
     }
     for (var k = 0; k < window.dom.mapFilters.length; k++) {
       window.dom.mapFilters[k].disabled = true;
     }
   };
 
+
   // функция, которая будет менять в поле цены плейсхолдер и минимальное значение в зависимости от выбранного типа жилья
   var onTypeAdvertSelectChange = function (evt) {
-    window.dom.priceAdvertInput.placeholder = priceTypeToRange[evt.target.value];
-    window.dom.priceAdvertInput.min = priceTypeToRange[evt.target.value];
+    window.utils.setAttribute(window.dom.priceAdvertInput, 'placeholder', priceTypeToRange[evt.target.value]);
+    window.utils.setAttribute(window.dom.priceAdvertInput, 'min', priceTypeToRange[evt.target.value]);
   };
 
 
+  var disableOptions = function (value, options, data) {
+    for (var i = 0; i < options.length; i++) {
+      if (!data[value].includes(window.dom.guestsAdvertSelect.options[i].value)) {
+        options[i].disabled = true;
+      } else {
+        options[i].disabled = false;
+        options[i].selected = true;
+      }
+    }
+  };
   // функция, которая дизейблит варианты количества гостей, если они не соотвествуют условию
   var onRoomsAdvertSelectChange = function (evt) {
     var guestsOptions = window.dom.guestsAdvertSelect.options;
-    for (var m = 0; m < guestsOptions.length; m++) {
-      if (!roomsForGuestsMap[evt.target.value].includes(window.dom.guestsAdvertSelect.options[m].value)) {
-        guestsOptions[m].disabled = true;
-      } else {
-        guestsOptions[m].disabled = false;
-        guestsOptions[m].selected = true;
-      }
-    }
+    disableOptions(evt.target.value, guestsOptions, roomsForGuestsMap);
   };
 
 
@@ -76,23 +76,34 @@
     element.value = evt.target.value;
   };
 
+  var switchInvalidStyles = function (element, state) {
+    element.classList[state]('ad-form__input--error')
+  }
+
+
+  var deletesErrorStyles = function () {
+    Array.from(window.dom.adForm.children).forEach(function (child) {
+      var errorInput = child.querySelector('.ad-form__input--error');
+      if (errorInput) {
+        switchInvalidStyles(errorInput, 'remove')
+      }
+    })
+  }
+
   // функция обработки события невалидности поля цены
   var onPriceAdvertInputInvalid = function () {
-    if (window.dom.priceAdvertInput.validity.rangeUnderflow) {
-      window.dom.priceAdvertInput.setCustomValidity('Выбранная Вами цена меньше минимально допустимой цены в ' + window.dom.priceAdvertInput.min + ' рублей');
-    } else {
-      window.dom.priceAdvertInput.setCustomValidity('');
-    }
+    switchInvalidStyles(window.dom.priceAdvertInput, 'add')
   };
 
   // функция обработки события невалидности поля заголовка
   var onTitleAdvertInputInvalid = function () {
+    switchInvalidStyles(window.dom.titleAdvertInput, 'add')
     if (window.dom.titleAdvertInput.validity.tooShort) {
       window.dom.titleAdvertInput.setCustomValidity('Заголовок объявления должен состоять минимум из 30 символов');
     } else if (window.dom.titleAdvertInput.validity.tooLong) {
       window.dom.titleAdvertInput.setCustomValidity('Заголовок объявления не должен превышать 100 символов');
     } else if (window.dom.titleAdvertInput.validity.valueMissing) {
-      window.dom.titleAdvertInput.setCustomValidity('Обязательное поле');
+      window.dom.titleAdvertInput.setCustomValidity('Вы не указали заголовок объявления');
     } else {
       window.dom.titleAdvertInput.setCustomValidity('');
     }
@@ -110,42 +121,32 @@
     }
   };
 
-  // функция включения форм
-  var enableForms = function () {
-    for (var j = 0; j < adFormFieldsets.length; j++) {
-      adFormFieldsets[j].disabled = false;
+  // функция включения состояния формы
+  var switchFormState = function (state) {
+    for (var j = 0; j < window.dom.adFormFieldsets.length; j++) {
+      window.dom.adFormFieldsets[j].disabled = state;
     }
     for (var k = 0; k < window.dom.mapFilters.length; k++) {
-      window.dom.mapFilters[k].disabled = false;
+      window.dom.mapFilters[k].disabled = state;
     }
-  };
-
-  var disableForms = function () {
-    for (var j = 0; j < adFormFieldsets.length; j++) {
-      adFormFieldsets[j].disabled = true;
-    }
-    for (var k = 0; k < window.dom.mapFilters.length; k++) {
-      window.dom.mapFilters[k].disabled = true;
-    }
-  };
+  }
 
   // функция высчитывает координаты пина главного, подставляет их в input
   var changeAdvertAddressInputValue = function (left, top) {
-    window.dom.advertAddressInput.value = Math.round(left + window.pin.MainPinSize.WIDTH / 2) + ', ' + Math.round(top + window.pin.MainPinSize.HEIGHT + window.pin.MainPinSize.TAIL);
+    window.dom.advertAddressInput.value = Math.round(left + window.pin.MainSize.WIDTH / 2) + ', ' + Math.round(top + window.pin.MainSize.HEIGHT + window.pin.MainSize.TAIL);
   };
 
 
   // функция, которая сработает в случае удачной отправки формы (деактивирует карту и отображает попап успеха)
   var onSuccessRequest = function () {
     window.dom.adForm.reset();
-    window.map.deactivateMap();
-    disableForms();
-    window.render.renderMessage('success');
+    window.map.deactivate();
+    window.render.message('success');
   };
 
   // функция, которая сработает в случае неудачной отправки формы (отображает попап неуспеха)
   var onErrorRequest = function () {
-    window.render.renderMessage('error');
+    window.render.message('error');
   };
 
   // функция, которая будет срабатывать при отправке формы
@@ -154,21 +155,20 @@
     window.backend.requestToServer('POST',
         onSuccessRequest,
         onErrorRequest,
-        new FormData(adForm)
+        new FormData(window.dom.adForm)
     );
   };
-
-  window.dom.adForm.addEventListener('submit', onSubmitAdForm);
 
   // функция, которая сработает при нажатии на кнопку очистки формы
   var onResetFormClick = function (evt) {
     evt.preventDefault();
-    window.map.deactivateMap();
-    changeAdvertAddressInputValue(window.pin.MainPinStartCoord.LEFT, window.pin.MainPinStartCoord.TOP);
+    window.map.deactivate();
+    changeAdvertAddressInputValue(window.pin.MainStartCoord.LEFT, window.pin.MainStartCoord.TOP);
   };
 
   window.form = {
-    enableForms: enableForms,
+    switchFormState: switchFormState,
+    deletesErrorStyles: deletesErrorStyles,
     changeAdvertAddressInputValue: changeAdvertAddressInputValue,
     onPriceAdvertInputInvalid: onPriceAdvertInputInvalid,
     onTitleAdvertInputInput: onTitleAdvertInputInput,
@@ -177,6 +177,10 @@
     onRoomsAdvertSelectChange: onRoomsAdvertSelectChange,
     onCheckInSelectChange: onCheckInSelectChange,
     onCheckOutSelectChange: onCheckOutSelectChange,
-    onResetFormClick: onResetFormClick
+    onResetFormClick: onResetFormClick,
+    roomsForGuestsMap: roomsForGuestsMap,
+    disableOptions: disableOptions,
+    priceTypeToRange: priceTypeToRange,
+    onSubmitAdForm: onSubmitAdForm,
   };
 })();

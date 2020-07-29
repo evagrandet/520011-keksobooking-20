@@ -526,6 +526,9 @@ fieldset {
   display: flex;
   width: 150px;
 }
+.ad-form__input--error {
+  box-shadow: 0px 0px 7px 0 red;
+}
 
 .ad-form-header__info {
     margin-top: 0;

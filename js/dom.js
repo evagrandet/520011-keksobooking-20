@@ -7,6 +7,10 @@
   // нахожу форму и все ее элементы
   var adForm = document.querySelector('.ad-form');
 
+  // нахожу все дочерние элементы у блока с фильтрами карты
+  var adFormFieldsets = adForm.children;
+
+
   // выношу в переменные поля заголовка, цены и типа жилья, поля въезда и выезда в/из жилья, поля количества комнат и вместимости
   var titleAdvertInput = adForm.querySelector('#title');
   var typeAdvertSelect = adForm.querySelector('#type');
@@ -55,6 +59,7 @@
   window.dom = {
     mainBlock: mainBlock,
     adForm: adForm,
+    adFormFieldsets: adFormFieldsets,
     titleAdvertInput: titleAdvertInput,
     typeAdvertSelect: typeAdvertSelect,
     priceAdvertInput: priceAdvertInput,

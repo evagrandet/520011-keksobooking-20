@@ -3,19 +3,33 @@
 (function () {
 
   var ANY_TYPE = 'any';
+  var Price = {
+    LOW: 'low',
+    MIDDLE: 'middle',
+    HIGH: 'high'
+  }
+  var PriceLimit = {
+    LOW: 10000,
+    MIDDLE: 50000,
+  }
 
   // функция, которая применяет все сильтры и возвращает список объявлений, подходящий всем условиям
   var applyFilters = function (adverts) {
-    return adverts
-      .filter(function (advert) {
-        return (
-          filterHousingType(advert) &&
+    var filteredAdverts = [];
+    adverts.forEach(function (advert) {
+      if (filterHousingType(advert) &&
           filterHousingPrice(advert) &&
           filterHousingRooms(advert) &&
           filterHousingGuests(advert) &&
-          filterHousingFeatures(advert)
-        );
-      });
+          filterHousingFeatures(advert) &&
+          filteredAdverts.length < window.render.ADVERT_COUNT
+      ) {
+        filteredAdverts.push(advert);
+      } else {
+        return;
+      }
+    });
+    return filteredAdverts;
   };
 
 
@@ -27,7 +41,7 @@
 
   // функция фильтровки по типу
   var filterHousingType = function (advert) {
-    return window.dom.housingTypeFilter.value === ANY_TYPE ? true : advert.offer.type === window.dom.housingTypeFilter.value;
+    return (advert.offer.type === window.dom.housingTypeFilter.value || window.dom.housingTypeFilter.value === ANY_TYPE) ? true : false;
   };
 
   // функция фильтровки по цене
@@ -35,16 +49,16 @@
     var result;
 
     switch (window.dom.housingPriceFilter.value) {
-      case 'low':
-        result = advert.offer.price < 10000;
+      case Price.LOW:
+        result = advert.offer.price < PriceLimit.LOW;
         break;
-      case 'middle':
-        result = advert.offer.price >= 10000 && advert.offer.price <= 50000;
+      case Price.MIDDLE:
+        result = advert.offer.price >= PriceLimit.LOW && advert.offer.price <= PriceLimit.MIDDLE;
         break;
-      case 'high':
-        result = advert.offer.price > 50000;
+      case Price.HIGH:
+        result = advert.offer.price > PriceLimit.MIDDLE;
         break;
-      case 'any':
+      case ANY_TYPE:
       default:
         result = true;
         break;
@@ -54,12 +68,12 @@
 
   // функция фильтровки по количеству комнат
   var filterHousingRooms = function (advert) {
-    return window.dom.housingRoomsFilter.value === ANY_TYPE ? true : advert.offer.rooms === Number(window.dom.housingRoomsFilter.value);
+    return (advert.offer.rooms === Number(window.dom.housingRoomsFilter.value) || window.dom.housingRoomsFilter.value === ANY_TYPE) ? true : false;
   };
 
   // функция фильтровки по количеству гостей
   var filterHousingGuests = function (advert) {
-    return window.dom.housingGuestsFilter.value === ANY_TYPE ? true : advert.offer.guests === Number(window.dom.housingGuestsFilter.value);
+    return (window.dom.housingGuestsFilter.value === ANY_TYPE || advert.offer.guests === Number(window.dom.housingGuestsFilter.value)) ? true : false;
 
   };
 

@@ -31,16 +31,16 @@
   // функция, которая будет срабатывать на нажатии левой кнопки мыши, и которая будет активировать карту
   var onMainPinMousedown = function (evt) {
     if (evt.buttons === 1 && !window.map.isMapActivated) {
-      window.map.activateMap();
+      window.map.activate();
     } else if (evt.buttons === 1 && window.map.isMapActivated) {
-      window.dragAndDrop.dragAndDropMainPin(evt);
+      window.dragAndDrop.mainPin(evt);
     }
   };
 
   // функция, которая будет срабатывать на нажатии кнопки ENTER, и которая будет активировать карту
   var onMainPinKeydown = function (evt) {
     if (evt.key === ENTER_KEY) {
-      window.map.activateMap();
+      window.map.activate();
     }
   };
 
@@ -50,11 +50,9 @@
 
 
   window.pin = {
-    MainPinSize: MainPinSize,
-    PinSize: PinSize,
-    MainPinStartCoord: MainPinStartCoord,
-    onMainPinMousedown: onMainPinMousedown,
-    onMainPinKeydown: onMainPinKeydown,
-    clearPins: clearPins
+    MainSize: MainPinSize,
+    Size: PinSize,
+    MainStartCoord: MainPinStartCoord,
+    clear: clearPins
   };
 })();

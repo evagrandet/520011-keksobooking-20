@@ -9,9 +9,9 @@
   };
 
   var updateAdverts = function (data) {
-    window.card.closeCard();
-    window.pin.clearPins();
-    window.render.renderAdverts(data);
+    window.card.close();
+    window.pin.clear();
+    window.render.adverts(data);
   };
 
 
@@ -19,20 +19,22 @@
   var onSuccessLoad = function (data) {
     window.map.adverts = data;
     updateAdverts(window.map.adverts);
+    window.dom.mapBlock.classList.remove('map--faded');
   };
 
   var onErrorLoad = function () {
-    window.render.renderMessage('error');
+    window.render.message('error');
+    deactivateMap();
   };
 
   // функция, которая срабатывает при взаимодействии с главным пином (удаляются классы у блоков карты и формы, перевожу поля формы и фильтра в активное состояние, меняю значение адреса главной метки [смещаю его с центра на ее 'хвост'], затем выключаю поле адреса)
   var activateMap = function () {
     window.map.isMapActivated = true;
     window.backend.requestToServer('GET', onSuccessLoad, onErrorLoad); // обращение к бэку за данными
-    window.dom.mapBlock.classList.remove('map--faded');
     window.dom.adForm.classList.remove('ad-form--disabled');
     // вызываю функции включения форм и определения адреса главного пина
-    window.form.enableForms();
+    window.form.switchFormState(false);
+    window.form.disableOptions(window.dom.roomsAdvertSelect.value, window.dom.guestsAdvertSelect.options, window.form.roomsForGuestsMap);
     window.form.changeAdvertAddressInputValue(window.dom.mainPin.offsetLeft, window.dom.mainPin.offsetTop);
 
     // обратботчик события, который сработает, если при отправке данных на сервер выяснится, что пользователь ввел цену меньше, чем необходимо при выбранном типе жилья
@@ -52,10 +54,13 @@
 
     window.dom.mapFilterBlock.addEventListener('change', window.utils.debounce(window.filter.onMapFilterBlockChange));
 
+
     window.dom.resetForm.addEventListener('click', window.form.onResetFormClick);
 
     // удаляю обработчики событий взаимодействия с главным пином
     window.dom.mainPin.removeEventListener('keydown', window.pin.onMainPinKeydown);
+
+    window.dom.adForm.addEventListener('submit', window.form.onSubmitAdForm);
   };
 
 
@@ -63,10 +68,10 @@
   var resetPage = function () {
     window.dom.mapFilterBlock.reset();
     window.dom.adForm.reset();
-    window.card.closeCard();
-    window.pin.clearPins();
-    window.dom.mainPin.style.left = window.pin.MainPinStartCoord.LEFT + 'px';
-    window.dom.mainPin.style.top = window.pin.MainPinStartCoord.TOP + 'px';
+    window.card.close();
+    window.pin.clear();
+    window.dom.mainPin.style.left = window.pin.MainStartCoord.LEFT + 'px';
+    window.dom.mainPin.style.top = window.pin.MainStartCoord.TOP + 'px';
 
   };
 
@@ -74,6 +79,7 @@
   var deactivateMap = function () {
     // будет обновляться флаг для невозможности перетаскивания
     window.map.isMapActivated = false;
+    window.form.deletesErrorStyles();
     // добавляться классы
     window.dom.mapBlock.classList.add('map--faded');
     window.dom.adForm.classList.add('ad-form--disabled');
@@ -81,8 +87,11 @@
     updateAdverts(window.map.adverts);
     // функция обнуление страницы
     resetPage();
+    // переключение формы в отключенное состояние
+    window.form.switchFormState(true);
+    window.utils.setAttribute(window.dom.priceAdvertInput, 'placeholder', window.form.priceTypeToRange[window.dom.typeAdvertSelect.value]);
     // пересчет данных для инпута поля адреса
-    window.form.changeAdvertAddressInputValue(window.pin.MainPinStartCoord.LEFT, (window.pin.MainPinStartCoord.TOP - window.pin.MainPinSize.TAIL - window.pin.MainPinSize.HEIGHT / 2));
+    window.form.changeAdvertAddressInputValue(window.pin.MainStartCoord.LEFT, (window.pin.MainStartCoord.TOP - window.pin.MainSize.TAIL - window.pin.MainSize.HEIGHT / 2));
 
 
     // удаление всех обработчиков событий
@@ -94,13 +103,14 @@
     window.dom.checkInSelect.removeEventListener('change', window.form.onCheckInSelectChange);
     window.dom.checkOutSelect.removeEventListener('change', window.form.onCheckOutSelectChange);
     window.dom.resetForm.removeEventListener('click', window.form.onResetFormClick);
+    window.dom.adForm.removeEventListener('submit', window.form.onSubmitAdForm);
   };
 
 
   window.map = {
-    activateMap: activateMap,
-    deactivateMap: deactivateMap,
-    MapCoord: MapCoord,
+    activate: activateMap,
+    deactivate: deactivateMap,
+    Coord: MapCoord,
     updateAdverts: updateAdverts,
     resetPage: resetPage
   };

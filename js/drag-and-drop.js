@@ -8,10 +8,10 @@
 
     // определяю пределы сдвига пина
     var limits = {
-      top: window.map.MapCoord.TOP_Y - (window.pin.MainPinSize.HEIGHT + window.pin.MainPinSize.TAIL),
-      bottom: window.map.MapCoord.BOTTOM_Y - (window.pin.MainPinSize.HEIGHT + window.pin.MainPinSize.TAIL),
-      right: window.map.MapCoord.RIGHT_X - Math.floor(window.pin.PinSize.WIDTH / 2),
-      left: window.map.MapCoord.LEFT_X - Math.floor(window.pin.PinSize.WIDTH / 2),
+      top: window.map.Coord.TOP_Y - (window.pin.MainSize.HEIGHT + window.pin.MainSize.TAIL),
+      bottom: window.map.Coord.BOTTOM_Y - (window.pin.MainSize.HEIGHT + window.pin.MainSize.TAIL),
+      right: window.map.Coord.RIGHT_X - Math.floor(window.pin.Size.WIDTH / 2),
+      left: window.map.Coord.LEFT_X - Math.floor(window.pin.Size.WIDTH / 2),
     };
 
     // стартовые координаты, с которых началось перетаскивание
@@ -87,6 +87,6 @@
     document.addEventListener('mouseup', onDocumentMouseUp);
   };
   window.dragAndDrop = {
-    dragAndDropMainPin: dragAndDropMainPin
+    mainPin: dragAndDropMainPin
   };
 })();
