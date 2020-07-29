@@ -16,19 +16,21 @@
   // функция, которая применяет все сильтры и возвращает список объявлений, подходящий всем условиям
   var applyFilters = function (adverts) {
     var filteredAdverts = [];
-    adverts.forEach(function (advert) {
+    for (var i = 0; i < adverts.length; i++) {
+      var advert = adverts.length[i];
       if (filterHousingType(advert) &&
           filterHousingPrice(advert) &&
           filterHousingRooms(advert) &&
           filterHousingGuests(advert) &&
-          filterHousingFeatures(advert) &&
-          filteredAdverts.length < window.render.ADVERT_COUNT
+          filterHousingFeatures(advert)
       ) {
         filteredAdverts.push(advert);
-      } else {
-        return;
       }
-    });
+      if (filteredAdverts.length === window.render.ADVERT_COUNT) {
+        break;
+      }
+    }
+
     return filteredAdverts;
   };
 
